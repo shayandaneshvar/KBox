@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: manager
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  data:
+    mongodb:
+      host: ${MONGO_LOCATION:localhost}
+      port: ${MONGO_PORT:27017}
+      #      uri: mongodb://${MONGO_LOCATION:localhost}/dapixi
+      #      username: dapixi
+      #      password: ????
+      database: kbox
+  profiles:
+    active: default, dev
+
+server:
+  port: 8192
+  error:
+    include-message: always
+
+
+
+

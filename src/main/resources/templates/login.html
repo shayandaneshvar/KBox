@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<style>
+
+
+    body {
+        align-items: center;
+        background-image: url("/img/person.svg");
+        background-repeat: repeat;
+        display: flex;
+        justify-content: center;
+        height: 100vh;
+    }
+
+    .form {
+        background-color: white;
+        border-radius: 20px;
+        box-sizing: border-box;
+        height: 450px;
+        padding: 20px;
+        width: 320px;
+        border-color: blueviolet;
+        border-width: 4px;
+        border-style: solid;
+    }
+
+    .title {
+        color: blueviolet;
+        font-family: sans-serif;
+        font-size: 36px;
+        font-weight: 600;
+        margin: 30px;
+        display: flex;
+        justify-content: center
+    }
+
+    .subtitle {
+        color: gray;
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+    .input-container {
+        height: 50px;
+        position: relative;
+        width: 100%;
+    }
+
+    .ic1 {
+        margin-top: 40px;
+    }
+
+    .ic2 {
+        margin-top: 30px;
+    }
+
+    .input {
+        border-radius: 6px;
+        border-width: 1px;
+        box-sizing: border-box;
+        color: black;
+        font-size: 18px;
+        height: 100%;
+        padding: 4px 20px 0;
+        width: 100%;
+    }
+
+
+    .submit {
+        background-color: blueviolet;
+        border-radius: 6px;
+        border: 0;
+        box-sizing: border-box;
+        color: #eee;
+        cursor: pointer;
+        font-size: 18px;
+        height: 50px;
+        margin-top: 38px;
+        text-align: center;
+        width: 100%;
+    }
+
+    .submit:hover {
+        opacity: 0.9;
+    }
+
+    a {
+        text-decoration: none;
+        color: gray;
+        font-family: sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        margin: 10px;
+        display: flex;
+        justify-content: center;
+    }
+
+</style>
+<body>
+<form class="form" action="/auth/login" method="post">
+    <div class="title">Login</div>
+    <div class="subtitle">Log in to continue to your profile page</div>
+    <div class="input-container ic1">
+        <input id="username" class="input" type="text" name="username"
+               placeholder="Username or Email"/>
+
+        <label for="username"></label>
+    </div>
+    <div class="input-container ic2">
+        <input id="password" class="input" type="password" name="password"
+               placeholder="Password"/>
+        <label for="password"></label>
+    </div>
+
+    <button class="submit">Login</button>
+
+
+    <div class="subtitle"><a href="./register.html" th:href="@{/auth/register}">Create
+        Account</a></div>
+</form>
+</body>
+</html>
