@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload File</title>
+</head>
+<body>
+<form action="#" th:action="@{/files/upload}" method="post" th:object="${file}"
+      enctype="multipart/form-data">
+    <!-- TODO : fill parent folder name with js -->
+    <label>
+        <input class=""
+               type="text"
+               name="parent"
+               hidden/>
+    </label>
+    <input class=""
+           value="upload file"
+           type="file"
+           name="uploadedImage"
+           accept="*/*"/>
+    <button type="submit">Upload</button>
+</form>
+</body>
+</html>

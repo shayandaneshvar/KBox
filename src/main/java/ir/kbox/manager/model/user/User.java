@@ -1,6 +1,6 @@
-package ir.kbox.manager.model;
+package ir.kbox.manager.model.user;
 
-import lombok.Data;
+import ir.kbox.manager.model.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,4 +1,4 @@
-package ir.kbox.manager.model;
+package ir.kbox.manager.model.user;
 
 import org.springframework.security.core.GrantedAuthority;
 

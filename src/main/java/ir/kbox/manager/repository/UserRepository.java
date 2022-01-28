@@ -1,6 +1,6 @@
 package ir.kbox.manager.repository;
 
-import ir.kbox.manager.model.User;
+import ir.kbox.manager.model.user.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

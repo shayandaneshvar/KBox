@@ -56,11 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         //XSRF-TOKEN
         http.csrf().disable();
 
-        http.authorizeRequests()
-                .antMatchers("/", "/index", "index.html", "/home", "/auth/**", "/login*", "/error")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+        http.authorizeRequests().anyRequest().permitAll();
 
         http.formLogin()
                 .defaultSuccessUrl("/home")

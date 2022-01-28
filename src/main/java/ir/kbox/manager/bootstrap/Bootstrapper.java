@@ -1,7 +1,7 @@
 package ir.kbox.manager.bootstrap;
 
-import ir.kbox.manager.model.Roles;
-import ir.kbox.manager.model.User;
+import ir.kbox.manager.model.user.Roles;
+import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.UserRepository;
 import ir.kbox.manager.service.UserService;
 import lombok.RequiredArgsConstructor;

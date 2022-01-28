@@ -1,11 +1,9 @@
 package ir.kbox.manager.service;
 
-import ir.kbox.manager.model.User;
-import ir.kbox.manager.model.UserPrincipal;
+import ir.kbox.manager.model.user.UserPrincipal;
 import ir.kbox.manager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;

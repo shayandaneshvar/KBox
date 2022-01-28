@@ -1,7 +1,7 @@
 package ir.kbox.manager.service;
 
-import ir.kbox.manager.model.Roles;
-import ir.kbox.manager.model.User;
+import ir.kbox.manager.model.user.Roles;
+import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

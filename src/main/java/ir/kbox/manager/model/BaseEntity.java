@@ -11,5 +11,4 @@ import java.io.Serializable;
 public class BaseEntity implements Serializable {
     @Id
     private String id;
-
 }

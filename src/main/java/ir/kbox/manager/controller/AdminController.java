@@ -1,7 +1,7 @@
 package ir.kbox.manager.controller;
 
 import ir.kbox.manager.config.security.SecurityUtil;
-import ir.kbox.manager.model.User;
+import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -36,10 +36,9 @@ public class AdminController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteUserById(@PathVariable String id,
-                               @RequestParam(value = "sessionId") String sessionId) {
-        securityUtil.checkRoleAdmin(sessionId);
+    public void deleteUserById(@PathVariable String id) {
         userService.deleteUserById(id);
     }
 
