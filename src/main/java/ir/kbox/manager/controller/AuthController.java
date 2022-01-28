@@ -28,7 +28,7 @@ public class AuthController {
             System.out.println("sadsd");
             return "redirect:/auth/register";
         }
-        userService.register(user);
+        userService.registerUser(user);
         System.out.println("redirecting...");
         return "redirect:/";
     }

@@ -4,18 +4,21 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Setter
 @ToString
+@Accessors(chain = true)
 @Document(collection = "users")
 public class User extends BaseEntity {
     @NotEmpty
@@ -29,4 +32,5 @@ public class User extends BaseEntity {
     private String firstname;
     private String lastname;
     private List<Roles> roles = new ArrayList<>();
+    private Instant creationDate;
 }
