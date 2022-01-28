@@ -7,6 +7,7 @@ import ir.kbox.manager.controller.exceptions.OperationFailedException;
 import ir.kbox.manager.model.file.File;
 import ir.kbox.manager.repository.FileRepository;
 import ir.kbox.manager.util.FileUtil;
+import ir.kbox.manager.util.datastructure.Tuple2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ public class FileService {
 
     @Transactional
     public String createFolder(String name, String parentFolder) {
+        checkAndCreateRoot();
         if (parentFolder.trim().isEmpty()) {
             parentFolder = File.ROOT;
         }
@@ -46,20 +48,24 @@ public class FileService {
     }
 
     public boolean checkFolderDoesntExist(String parentWithFolder) {
-        Pair<String, String> parentAndFolder = extractParentAndFolder(parentWithFolder);
+        Tuple2<String, String> parentAndFolder = extractParentAndFolder(parentWithFolder);
         return !checkFileOrFolderExists(parentAndFolder.getFirst(), parentAndFolder.getSecond());
     }
 
-    public static Pair<String, String> extractParentAndFolder(String parentWithFolder) {
+    public static Tuple2<String, String> extractParentAndFolder(String parentWithFolder) {
+        if (parentWithFolder == null || parentWithFolder.equals(File.ROOT)) {
+            return Tuple2.of(null, File.ROOT);
+        }
         String[] folders = parentWithFolder.split("/");
         String lastFolder = folders[folders.length - 1];
         String parent = parentWithFolder.substring(0,
                 parentWithFolder.lastIndexOf(lastFolder));
-        return Pair.of(parent, lastFolder);
+        return Tuple2.of(parent, lastFolder);
     }
 
     @Transactional
     public void uploadFile(File file, MultipartFile uploadedFile) {
+        checkAndCreateRoot();
         if (file.getParent() == null || file.getParent().trim().isEmpty()) {
             file.setParent(File.ROOT);
         }
@@ -77,7 +83,7 @@ public class FileService {
             FileUtil.deleteFile(previousFile.getAddress());
             fileRepository.delete(previousFile);
         }
-        Pair<String, String> addressContent;
+        Tuple2<String, String> addressContent;
         try {
             addressContent = FileUtil.uploadFile(uploadedFile, file.getName());
         } catch (IOException e) {
@@ -90,18 +96,26 @@ public class FileService {
                 .setFileType(addressContent.getSecond())
                 .setUser(securityUtil.getCurrentUser());
         fileRepository.save(file);
-        Pair<String, String> parentAndFolder = extractParentAndFolder(file.getParent());
-        File folder = fileRepository.findFileByNameAndParentAndUser(parentAndFolder.getSecond(),
+        File folder;
+        Tuple2<String, String> parentAndFolder = extractParentAndFolder(file.getParent());
+        folder = fileRepository.findFileByNameAndParentAndUser(parentAndFolder.getSecond(),
                 parentAndFolder.getFirst(), securityUtil.getCurrentUser());
         folder.setLastModified(Instant.now());
         fileRepository.save(folder);
+    }
+
+    private void checkAndCreateRoot() {
+        if (!fileRepository.existsFileByNameAndUser(File.ROOT,
+                securityUtil.getCurrentUser())) {
+            fileRepository.save(File.getRootFolder(securityUtil.getCurrentUser()));
+        }
     }
 
     public Boolean hasFolderUpdated(String folder, Instant lastModified) {
         if (checkFolderDoesntExist(folder)) {
             throw new NotFoundException("Such folder does not exist!");
         }
-        Pair<String, String> parentAndFolder = extractParentAndFolder(folder);
+        Tuple2<String, String> parentAndFolder = extractParentAndFolder(folder);
         return fileRepository.findFileByNameAndParentAndUser(parentAndFolder.getSecond(),
                 parentAndFolder.getFirst(), securityUtil.getCurrentUser()).getLastModified().isAfter(lastModified);
     }

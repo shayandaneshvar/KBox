@@ -1,9 +1,9 @@
 package ir.kbox.manager.util;
 
+import ir.kbox.manager.util.datastructure.Tuple2;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.util.Pair;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -15,7 +15,7 @@ import java.util.UUID;
 public class FileUtil {
     public static final String uploadPath = "/home/files/";
 
-    public Pair<String, String> uploadFile(@NonNull MultipartFile file, @NonNull String title) throws IOException {
+    public Tuple2<String, String> uploadFile(@NonNull MultipartFile file, @NonNull String title) throws IOException {
         File path = new File(uploadPath + UUID.randomUUID() + "-" +
                 title + getFileExtension(file.getOriginalFilename()));
         if (!path.createNewFile()) {
@@ -25,7 +25,7 @@ public class FileUtil {
         try (FileOutputStream fos = new FileOutputStream(path)) {
             fos.write(file.getBytes());
         }
-        return Pair.of(path.getAbsolutePath(), getContentType(path));
+        return Tuple2.of(path.getAbsolutePath(), getContentType(path));
     }
 
     private String getContentType(File path) {

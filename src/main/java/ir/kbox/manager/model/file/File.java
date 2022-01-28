@@ -11,7 +11,6 @@ import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
-import java.util.LinkedList;
 
 @Data
 @NoArgsConstructor
@@ -36,4 +35,13 @@ public class File extends BaseEntity {
     private Visibility visibility = Visibility.STRICT;
     private Instant creationDate;
     private Instant lastModified;
+
+    public static File getRootFolder(User user) {
+        return new File().setCreationDate(Instant.now())
+                .setLastModified(Instant.now())
+                .setParent(null)
+                .setName(ROOT)
+                .setIsDirectory(true)
+                .setUser(user);
+    }
 }
