@@ -3,17 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </head>
 <style>
-
-
+    html, body {
+        width: 100%;
+        height:100%;
+    }
     body {
-        align-items: center;
         background-image: url("/img/person.svg");
         background-repeat: repeat;
-        display: flex;
-        justify-content: center;
-        height: 100vh;
     }
 
     .form {
@@ -23,9 +25,11 @@
         height: 450px;
         padding: 20px;
         width: 320px;
-        border-color: blueviolet;
+        border-color: darkorchid;
         border-width: 4px;
         border-style: solid;
+        display: flex;
+        flex-direction: column;
     }
 
     .title {
@@ -75,7 +79,7 @@
 
 
     .submit {
-        background-color: blueviolet;
+        background-color: darkorchid;
         border-radius: 6px;
         border: 0;
         box-sizing: border-box;
@@ -105,26 +109,41 @@
 
 </style>
 <body>
-<form class="form" action="/auth/login" method="post">
-    <div class="title">Login</div>
-    <div class="subtitle">Log in to continue to your profile page</div>
-    <div class="input-container ic1">
-        <input id="username" class="input" type="text" name="username"
-               placeholder="Username or Email"/>
-
-        <label for="username"></label>
+<div class="container-fluid bg-dark text-white" >
+    <div class="row p">
+        <div class="col-1 up-buttons" onclick=location.href="/index">
+            Kbox
+        </div>
+        <div class="col-1 up-buttons" onclick=location.href="/auth/login" >
+            Login
+        </div>
     </div>
-    <div class="input-container ic2">
-        <input id="password" class="input" type="password" name="password"
-               placeholder="Password"/>
-        <label for="password"></label>
+</div>
+
+<div class="container-fluid pt-5">
+    <div class="row justify-content-center pt-5">
+        <form class="form" action="/auth/login" method="post">
+            <div class="title">Login</div>
+            <div class="subtitle">Log in to continue to your profile page</div>
+            <div class="input-container ic1">
+                <input id="username" class="input" type="text" name="username"
+                       placeholder="Username or Email"/>
+
+                <label for="username"></label>
+            </div>
+            <div class="input-container ic2">
+                <input id="password" class="input" type="password" name="password"
+                       placeholder="Password"/>
+                <label for="password"></label>
+            </div>
+            <button class="submit">Login</button>
+            <div class="subtitle"><a href="./register.html" th:href="@{/auth/register}">Create
+                Account</a>
+            </div>
+        </form>
+
     </div>
 
-    <button class="submit">Login</button>
-
-
-    <div class="subtitle"><a href="./register.html" th:href="@{/auth/register}">Create
-        Account</a></div>
-</form>
+</div>
 </body>
 </html>

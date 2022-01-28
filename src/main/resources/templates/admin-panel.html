@@ -10,60 +10,59 @@
     <title>Admin Dashboard</title>
 </head>
 <style>
-    .user, .general-info {
-        display: flex;
-        justify-content: center;
-        justify-items: center;
-        padding: 1rem;
-    }
-
-    .info {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
+    .up-buttons:hover {
+         background: azure;
+         color: black;
+         cursor: pointer;
     }
 </style>
-<script>
-    function deleteUser(id, currentSessionID) {
-        const xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            console.log("changed")
-            console.log(this.status)
-            location.reload()
-        };
-        xhr.open("DELETE", window.location.href + "/admin/" + id + "?sessionId=" + currentSessionID, true);
-        xhr.send();
-    }
 
-</script>
 <body>
-<p th:text="${sessionId}">SESSION ID</p>
-<div th:each="user:${usersList}">
-
-    <div class="user-container">
-        <hr>
-        <div class="user">
-            <div class="general-info">
-                <div class="info" th:text="${user.id}">someId</div>
-                <div class="info" th:text="${user.firstname}">John</div>
-                <div class="info" th:text="${user.lastname}">Doe</div>
-                <div class="info" th:text="${user.email}">Email@example.com
-                </div>
-                <div class="info" th:text="${user.creationDate}">2020-2-12</div>
-            </div>
-            <div class="functionalities">
-                <button type="button" class="button btn btn-success">Change
-                    Password
-                </button>
-                <button type="button" class="button btn btn-danger"
-                        th:attr="onclick=|deleteUser('${user.id}','${sessionId}')|">
-                    Delete
-                </button>
-            </div>
+<div class="container-fluid bg-dark text-white" >
+    <div class="row">
+        <div class="col-1 up-buttons" onclick=location.href="/index">
+            Kbox
         </div>
-        <hr>
+        <div class="col-1 up-buttons" onclick=location.href="/auth/login" >
+            Login
+        </div>
     </div>
+</div>
 
+<div class="container-fluid bg-white">
+    <table class="table text-dark" th:each="user:${usersList}">
+        <thead>
+            <tr>
+                <th score="col">Firstname</th>
+                <th score="col">Lastname</th>
+                <th score="col">Email </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user:${usersList}">
+                <th th:text="${user.firstname}">John></th>
+                <td th:text="${user.lastname}">Doe></td>
+                <td th:text="${user.email}">Email@example.com></td>
+                <td> <button type="button" class="button btn btn-success">Change Password </button></td>
+                <td> <button type="button" class="button btn btn-danger" th:attr="onclick=|deleteUser('${user.id}','${sessionId}')|">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
 
 </div>
 </body>
 </html>
+
+<script>
+    function deleteUser(id, currentSessionID) {
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.status === 204) {
+                location.reload()
+            }
+        };
+        xhr.open("DELETE", window.location.href + "/" + id + "/?sessionId=" + currentSessionID, true);
+        xhr.send();
+    }
+
+</script>
