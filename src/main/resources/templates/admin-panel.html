@@ -7,48 +7,43 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/general.css">
     <title>Admin Dashboard</title>
+    <script src="https://kit.fontawesome.com/204035da51.js" crossorigin="anonymous"></script>
 </head>
-<style>
-    .up-buttons:hover {
-         background: azure;
-         color: black;
-         cursor: pointer;
-    }
-</style>
 
 <body>
-<div class="container-fluid bg-dark text-white" >
-    <div class="row">
-        <div class="col-1 up-buttons" onclick=location.href="/index">
-            Kbox
-        </div>
-        <div class="col-1 up-buttons" onclick=location.href="/auth/login" >
-            Login
-        </div>
-    </div>
-</div>
+<div th:insert="fragment/header.html :: header"></div>
 
-<div class="container-fluid bg-white">
-    <table class="table text-dark" th:each="user:${usersList}">
-        <thead>
+<div class="container-fluid primary-text-color text-center">  List of Users </div>
+
+<div class="container-fluid">
+    <table class="table primary-text-color" th:each="user:${usersList}">
+        <thead class="secondary-color">
             <tr>
-                <th score="col">Firstname</th>
-                <th score="col">Lastname</th>
-                <th score="col">Email </th>
+                <th scope="col">Firstname</th>
+                <th scope="col">Lastname</th>
+                <th scope="col">Email </th>
+                <th scope="col">Change Password</th>
+                <th scope="col">Delete User </th>
             </tr>
         </thead>
-        <tbody>
+        <tbody >
             <tr th:each="user:${usersList}">
-                <th th:text="${user.firstname}">John></th>
+                <td th:text="${user.firstname}">John></td>
                 <td th:text="${user.lastname}">Doe></td>
                 <td th:text="${user.email}">Email@example.com></td>
-                <td> <button type="button" class="button btn btn-success">Change Password </button></td>
-                <td> <button type="button" class="button btn btn-danger" th:attr="onclick=|deleteUser('${user.id}','${sessionId}')|">Delete</button></td>
+                <td> <button type="button" class="button btn btn-success">
+                        <i class="fas fa-cog"></i>
+                    </button></td>
+                <td>
+                    <button type="button" class="button btn btn-danger" th:attr="onclick=|deleteUser('${user.id}','${sessionId}')|">
+                        <i class="fas fa-trash-alt" colo></i>
+                    </button>
+                </td>
             </tr>
         </tbody>
     </table>
-
 </div>
 </body>
 </html>
