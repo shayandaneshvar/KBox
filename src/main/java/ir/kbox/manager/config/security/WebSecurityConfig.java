@@ -72,7 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/auth/logout")
                 .deleteCookies("JSESSIONID");
         http.sessionManagement().enableSessionUrlRewriting(false);
-        http.sessionManagement().maximumSessions(50).sessionRegistry(sessionRegistry());
+        http.sessionManagement().maximumSessions(50)
+                .sessionRegistry(sessionRegistry());
     }
 
     @Bean

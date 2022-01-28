@@ -4,13 +4,15 @@ import ir.kbox.manager.controller.exceptions.ForbiddenException;
 import ir.kbox.manager.controller.exceptions.UnAuthorizedException;
 import ir.kbox.manager.model.Roles;
 import ir.kbox.manager.model.UserPrincipal;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class SecurityUtil {
-    private SessionRegistry sessionRegistry;
+    private final SessionRegistry sessionRegistry;
 
     public void checkRoleAdmin(String id) {
         checkRole(Roles.ADMIN, id);
