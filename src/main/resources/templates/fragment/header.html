@@ -1,0 +1,26 @@
+<html>
+
+<head>
+    <style th:fragment="nav-style">
+        .up-buttons:hover {
+            background: azure;
+            color: black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid primary-color primary-text-color " th:fragment="header">
+    <div class="row">
+        <div class="col-1 up-buttons" onclick=location.href="/index">
+            Kbox
+        </div>
+        <div class="col-1 up-buttons" onclick=location.href="/auth/login" >
+            Login
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
