@@ -1,15 +1,34 @@
+:root {
+    --primary-color: #072227;
+    --primary-text-color: #35858B;
+    --secondary-color: #4FBDBA;
+    --secondary-text-color: #AEFEFF;
+}
+
+.up-buttons:hover {
+    background: azure;
+    color: black;
+    cursor: pointer;
+}
+
+html, body {
+    width: 100%;
+    height:100%;
+}
+
 .primary-color {
-    background-color: #072227;
+    background-color: var(--primary-color);
 }
 
 .primary-text-color {
-    background-color: #35858B;
+    color: var(--primary-text-color)
 }
 
 .secondary-color {
-    background-color: #4FBDBA;
+    background-color: var(--secondary-color);
 }
 
 .secondary-text-color {
-    background-color: #AEFEFF;
+    color: var(--secondary-text-color);
+>>>>>>> e2182cd (Build admin ui)
 }
