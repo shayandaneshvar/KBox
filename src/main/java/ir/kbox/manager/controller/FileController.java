@@ -27,7 +27,9 @@ public class FileController {
     @PreAuthorize("hasRole('USER')")
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadFile(File file, @RequestParam("uploadedImage")
-            MultipartFile uploadedFile) {
+            MultipartFile uploadedFile, @RequestParam(value = "parent",
+            defaultValue = File.ROOT) String parent) {
+        file.setParent(parent);
         fileService.uploadFile(file, uploadedFile);
     }
 

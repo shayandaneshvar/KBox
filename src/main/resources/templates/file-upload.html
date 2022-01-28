@@ -8,12 +8,6 @@
 <form action="#" th:action="@{/files/upload}" method="post" th:object="${file}"
       enctype="multipart/form-data">
     <!-- TODO : fill parent folder name with js -->
-    <label>
-        <input class=""
-               type="text"
-               name="parent"
-               hidden/>
-    </label>
     <input class=""
            value="upload file"
            type="file"
