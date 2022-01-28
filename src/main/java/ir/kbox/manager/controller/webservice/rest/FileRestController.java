@@ -23,17 +23,24 @@ public class FileRestController {
         return fileService.createFolder(name, parentFolder);
     }
 
+    @GetMapping("/upload/file")
+    @PreAuthorize("hasAnyRole()")
+    public Boolean doesOverwrite(@RequestParam(value = "parent", defaultValue
+            = File.ROOT) String parent, @RequestParam("name") String name) {
+        return fileService.doesOverwrite(parent, name);
+    }
+
     @GetMapping("/folder/update")
     @PreAuthorize("hasAnyRole()")
     public Boolean hasFolderUpdated(@RequestParam("folder") String folder,
                                     @RequestParam("lastModified") Instant lastModified) {
-        return fileService.hasFolderUpdated(folder,lastModified);
+        return fileService.hasFolderUpdated(folder, lastModified);
     }
 
     @DeleteMapping
     @PreAuthorize("hasAnyRole()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteFileById(@RequestParam("id") String id){
+    public void deleteFileById(@RequestParam("id") String id) {
         fileService.deleteFileById(id);
     }
 

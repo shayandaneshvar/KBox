@@ -137,4 +137,8 @@ public class FileService {
                     throw new NotFoundException("No such file exists!");
                 });
     }
+
+    public Boolean doesOverwrite(String parent, String name) {
+        return fileRepository.existsFileByNameAndParentAndUser(name,parent,securityUtil.getCurrentUser());
+    }
 }
