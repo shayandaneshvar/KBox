@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<!--xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
     <meta charset="UTF-8">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -10,12 +10,20 @@
     <link rel="stylesheet" href="/css/general.css">
     <title>Admin Dashboard</title>
     <script src="https://kit.fontawesome.com/204035da51.js" crossorigin="anonymous"></script>
+
 </head>
 
 <body>
 <div th:insert="fragment/header.html :: header"></div>
 
 <div class="container-fluid primary-text-color text-center">  List of Users </div>
+
+<p sec:authorized="hasRole('ADMIN')">
+
+</p>
+<p sec:authorize="isAuthenticated()">
+
+</p>
 
 <div class="container-fluid">
     <table class="table primary-text-color">
