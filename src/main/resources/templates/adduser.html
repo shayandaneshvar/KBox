@@ -10,10 +10,6 @@
 
 </head>
 <style>
-    body {
-        background-image: url("/img/person.svg");
-        background-repeat: repeat;
-    }
 
     .form {
         border-color: var(--primary-color);
@@ -110,37 +106,33 @@
 </style>
 <body>
 
-<div th:insert="fragment/header.html :: header"></div>
+    <div th:insert="fragment/header.html :: header"></div>
 
-<div class="container-fluid pt-5">
-    <div class="row justify-content-center pt-5">
-        <form class="form" method="post" onsubmit="return validateForm()" th:action="@{/auth/register}" th:object="${user}">
-            <div class="subtitle" id="error" ></div>
-            <div class="title">Sign up</div>
-            <div class="subtitle">Sign up to continue to your profile page</div>
-            <div class="input-container ic1">
-                <input id="fname" name="fname" class="input" type="text" th:field="*{firstname}" placeholder="Firstname"/>
-            </div>
-            <div class="input-container ic2">
-                <input id="lname" name="lname" class="input" type="text" placeholder="Lastname" th:field="*{lastname}"/>
-            </div>
-            <div class="input-container ic2">
-                <input id="pass" name="pass" class="input" type="password" placeholder="Password" th:field="*{password}"/>
-            </div>
-            <div class="input-container ic2">
-                <input id="username" name="username" class="input" type="text" placeholder="Username" th:field="*{username}"/>
-            </div>
-            <div class="input-container ic2">
-                <input id="email" name="email" class="input"  placeholder="Email" th:field="*{email}"/>
-            </div>
-            <button type="submit" class="submit" >Sign Up</button>
-            <div class="subtitle"><a  th:href="@{/auth/login}">Sign In</a> &nbsp; <a href="#">Forgot
-                Password</a></div>
-        </form>
+    <div class="container-fluid pt-5">
+        <div class="row justify-content-center pt-5">
+            <form class="form" onsubmit="return validateForm()" th:action="@{/auth/register}" th:object="${user}">
+                <div class="subtitle" id="error" ></div>
+                <div class="title">Add user</div>
+                <div class="input-container ic1">
+                    <input id="fname" name="fname" class="input" type="text" th:field="*{firstname}" placeholder="Firstname"/>
+                </div>
+                <div class="input-container ic2">
+                    <input id="lname" name="lname" class="input" type="text" placeholder="Lastname" th:field="*{lastname}"/>
+                </div>
+                <div class="input-container ic2">
+                    <input id="pass" name="pass" class="input" type="password" placeholder="Password" th:field="*{password}"/>
+                </div>
+                <div class="input-container ic2">
+                    <input id="username" name="username" class="input" type="text" placeholder="Username" th:field="*{username}"/>
+                </div>
+                <div class="input-container ic2">
+                    <input id="email" name="email" class="input"  placeholder="Email" th:field="*{email}"/>
+                </div>
+                <button type="submit" class="submit">Add</button>
+            </form>
+        </div>
     </div>
-</div>
 </body>
-
 <script>
     function validateForm() {
         let fname = document.getElementById('fname');
@@ -246,6 +238,5 @@
         }
     }
 </script>
-
 
 </html>

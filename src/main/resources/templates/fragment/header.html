@@ -17,8 +17,11 @@
                 <div class="col-1 up-buttons" onclick=location.href="/index">
                     Kbox
                 </div>
-                <div class="col-1 up-buttons" onclick=location.href="/auth/login" >
+                <div class="col-1 up-buttons" onclick=location.href="/auth/login" sec:authorize="not isAuthenticated()" >
                     Login
+                </div>
+                <div class="col-1 up-buttons" onclick=location.href="/auth/logout" sec:authorize="isAuthenticated()" >
+                    Logout
                 </div>
                 <div class="col-1 up-buttons" onclick=location.href="/adduser" sec:authorize="hasRole('ADMIN')" >
                     Add user
