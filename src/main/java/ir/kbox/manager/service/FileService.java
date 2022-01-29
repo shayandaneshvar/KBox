@@ -37,8 +37,8 @@ public class FileService {
             }
         }
         return fileRepository.save(new File().setIsDirectory(true)
-                .setName(name).setParent(parentFolder)
-                .setUser(securityUtil.getCurrentUser()))
+                        .setName(name).setParent(parentFolder)
+                        .setUser(securityUtil.getCurrentUser()))
                 .getName();
     }
 
@@ -139,6 +139,9 @@ public class FileService {
     }
 
     public Boolean doesOverwrite(String parent, String name) {
+        if (parent.equals("null")) {
+            parent = File.ROOT;
+        }
         return fileRepository.existsFileByNameAndParentAndUser(name, parent, securityUtil.getCurrentUser());
     }
 
