@@ -1,16 +1,6 @@
 <html>
     <html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-    <head>
-        <style th:fragment="nav-style">
-            .up-buttons:hover {
-                background: azure;
-                color: black;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-
     <body>
         <div class="container-fluid primary-color primary-text-color " th:fragment="header">
             <div class="row">
@@ -20,11 +10,14 @@
                 <div class="col-1 up-buttons" onclick=location.href="/auth/login" sec:authorize="not isAuthenticated()" >
                     Login
                 </div>
+                <div class="col-1 up-buttons" onclick=location.href="/admin" sec:authorize="hasRole('ADMIN')" >
+                    Admin Panel
+                </div>
+                <div class="col-1 up-buttons" onclick=location.href="/files/upload" sec:authorize="isAuthenticated()" >
+                    Upload
+                </div>
                 <div class="col-1 up-buttons" onclick=location.href="/auth/logout" sec:authorize="isAuthenticated()" >
                     Logout
-                </div>
-                <div class="col-1 up-buttons" onclick=location.href="/admin/user" sec:authorize="hasRole('ADMIN')" >
-                    Add user
                 </div>
             </div>
 
