@@ -1,6 +1,7 @@
 package ir.kbox.manager.model.user;
 
 import ir.kbox.manager.model.BaseEntity;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,6 +19,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @Accessors(chain = true)
 @Document(collection = "users")
 public class User extends BaseEntity {

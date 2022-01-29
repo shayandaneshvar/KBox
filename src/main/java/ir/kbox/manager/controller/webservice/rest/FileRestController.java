@@ -28,7 +28,7 @@ public class FileRestController {
     @GetMapping("/upload/file")
     @PreAuthorize("isAuthenticated()")
     public Boolean doesOverwrite(@RequestParam(value = "parent", defaultValue
-            = File.ROOT) String parent, @RequestParam("name") String name, HttpServletRequest httpServletRequest) {
+            = File.ROOT) String parent, @RequestParam("name") String name) {
         return fileService.doesOverwrite(parent, name);
     }
 
