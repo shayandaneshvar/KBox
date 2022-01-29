@@ -28,13 +28,13 @@
                     <h1> Upload Your File</h1>
                 </div>
                 <div class="pb-5">
-                    <form th:action="@{/files/upload(parent=${parent})}"  onsubmit="checkForOverWrite(event)" method="post" th:object="${file}"
+                    <form id="upload-from" th:action="@{/files/upload}" method="post" th:object="${file}"
                           enctype="multipart/form-data">
                         <div class="secondary-text-color">
-                            <input class="form-control form-control-lg" id="formFileLg" type="file" onclick="resetCalledState()" value="upload file" name="uploadedImage" accept="*/*" >
+                            <input id="formFileLg" class="form-control form-control-lg"  type="file" value="upload file" name="uploadedImage" accept="*/*" >
                         </div>
                         <div class="pt-2">
-                            <button type="submit" class="btn primary-color primary-text-color">Upload</button>
+                            <button type="button"  onclick="checkForOverwrite()" class="btn primary-color primary-text-color">Upload</button>
                         </div>
                     </form>
                 </div>
@@ -44,13 +44,13 @@
 </body>
 
 <script>
-    async function checkForOverWrite(event) {
+    async function checkForOverwrite() {
         let name=document.getElementById('formFileLg').value.split("\\").pop();
         let parent = new URL(location.href).searchParams.get('parent');
         const exists= await fetch("/api/files/upload/file?parent=" + parent + "&name=" + name ).then(res => res.json());
         if (exists) {
-            if (!confirm("file is exists.")) {
-                event.preventDefault();
+            if (confirm("file is exists.")) {
+                document.querySelector('#upload-from').submit();
             }
         }
     }
