@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -24,10 +25,10 @@ public class AuthController {
 
     // TODO: 1/29/2022 fix validation
     @PostMapping("/register")
-    public String register(@Valid User user, BindingResult bindingResult) {
+    public String register(@Valid User user, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
             System.out.println("sadsd");
-            return "redirect:/auth/register";
+            return "redirect:" + request.getRequestURL();
         }
         userService.registerUser(user);
         System.out.println("redirecting...");
