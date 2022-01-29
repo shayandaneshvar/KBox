@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
 @RestController
@@ -24,9 +26,9 @@ public class FileRestController {
     }
 
     @GetMapping("/upload/file")
-    @PreAuthorize("hasAnyRole()")
+    @PreAuthorize("isAuthenticated()")
     public Boolean doesOverwrite(@RequestParam(value = "parent", defaultValue
-            = File.ROOT) String parent, @RequestParam("name") String name) {
+            = File.ROOT) String parent, @RequestParam("name") String name, HttpServletRequest httpServletRequest) {
         return fileService.doesOverwrite(parent, name);
     }
 

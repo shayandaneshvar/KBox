@@ -18,13 +18,6 @@
 
 <div class="container-fluid primary-text-color text-center">  List of Users </div>
 
-<p sec:authorized="hasRole('ADMIN')">
-
-</p>
-<p sec:authorize="isAuthenticated()">
-
-</p>
-
 <div class="container-fluid">
     <table class="table primary-text-color">
         <thead class="secondary-color">
@@ -46,7 +39,7 @@
                     </button></td>
                 <td>
                     <button type="button" class="button btn btn-danger" th:attr="onclick=|deleteUser('${user.id}','${sessionId}')|">
-                        <i class="fas fa-trash-alt" colo></i>
+                        <i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
             </tr>
@@ -64,7 +57,7 @@
                 location.reload()
             }
         };
-        xhr.open("DELETE", window.location.href + "/" + id + "/?sessionId=" + currentSessionID, true);
+        xhr.open("DELETE", window.location.href + "/" + id, true);
         xhr.send();
     }
 
