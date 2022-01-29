@@ -10,11 +10,10 @@
 }
 
 .up-buttons:hover {
-    background: azure;
-    color: black;
+    background: var(--secondary-color);
+    color: var(--secondary-text-color);
     cursor: pointer;
 }
-
 html, body {
     width: 100%;
     height:100%;
