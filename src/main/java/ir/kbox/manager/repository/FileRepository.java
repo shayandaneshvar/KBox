@@ -1,7 +1,6 @@
 package ir.kbox.manager.repository;
 
 import ir.kbox.manager.model.file.File;
-import ir.kbox.manager.model.user.User;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,15 +10,20 @@ import java.util.Optional;
 @Repository
 public interface FileRepository extends MongoRepository<File, String> {
 
-    Boolean existsFileByNameAndUser(String name, User user);
+    Boolean existsFileByNameAndUserId(String name, String userId);
 
-    Boolean existsFileByNameAndParentAndUser(String name, String parent, User user);
+    Boolean existsFileByNameAndParentAndUserId(String name, String parent, String userId);
 
-    File findFileByNameAndParentAndUser(String name, String parent, User user);
+    Boolean existsFileByNameAndParent(String name,String parent);
+    Boolean existsByNameAndParent(String name,String parent);
+    List<File> findByNameAndParentAndUserId(String name, String parent, String userId);
+    List<File> findByNameAndParent(String name,String parent);
 
-    Optional<File> findByIdAndUser(String id, User currentUser);
+    File findFileByNameAndParentAndUserId(String name, String parent, String userId);
+
+    Optional<File> findByIdAndUserId(String id, String currentUser);
 
     Boolean existsByParent(String parent);
 
-    List<File> findFilesByParentAndUser(String parent, User currentUser);
+    List<File> findFilesByParentAndUserId(String parent, String currentUser);
 }

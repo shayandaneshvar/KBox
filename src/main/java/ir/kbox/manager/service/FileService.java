@@ -38,13 +38,13 @@ public class FileService {
         }
         return fileRepository.save(new File().setIsDirectory(true)
                         .setName(name).setParent(parentFolder)
-                        .setUser(securityUtil.getCurrentUser()))
+                        .setUserId(securityUtil.getCurrentUser().getId()))
                 .getName();
     }
 
     public boolean checkFileOrFolderExists(String parent, String folderName) {
-        return fileRepository.existsFileByNameAndParentAndUser(folderName, parent,
-                securityUtil.getCurrentUser());
+        return fileRepository.existsFileByNameAndParentAndUserId(folderName, parent,
+                securityUtil.getCurrentUser().getId());
     }
 
     public boolean checkFolderDoesntExist(String parentWithFolder) {
@@ -77,8 +77,8 @@ public class FileService {
         file.setName(uploadedFile.getOriginalFilename());
         if (checkFileOrFolderExists(file.getParent(), file.getName())) {
             File previousFile = fileRepository
-                    .findFileByNameAndParentAndUser(file.getName(),
-                            file.getParent(), securityUtil.getCurrentUser());
+                    .findFileByNameAndParentAndUserId(file.getName(),
+                            file.getParent(), securityUtil.getCurrentUser().getId());
             file.setId(previousFile.getId());
             FileUtil.deleteFile(previousFile.getAddress());
             fileRepository.delete(previousFile);
@@ -94,19 +94,19 @@ public class FileService {
                 .setCreationDate(Instant.now())
                 .setLastModified(Instant.now())
                 .setFileType(addressContent.getSecond())
-                .setUser(securityUtil.getCurrentUser());
+                .setUserId(securityUtil.getCurrentUser().getId());
         fileRepository.save(file);
         File folder;
         Tuple2<String, String> parentAndFolder = extractParentAndFolder(file.getParent());
-        folder = fileRepository.findFileByNameAndParentAndUser(parentAndFolder.getSecond(),
-                parentAndFolder.getFirst(), securityUtil.getCurrentUser());
+        folder = fileRepository.findFileByNameAndParentAndUserId(parentAndFolder.getSecond(),
+                parentAndFolder.getFirst(), securityUtil.getCurrentUser().getId());
         folder.setLastModified(Instant.now());
         fileRepository.save(folder);
     }
 
     private void checkAndCreateRoot() {
-        if (!fileRepository.existsFileByNameAndUser(File.ROOT,
-                securityUtil.getCurrentUser())) {
+        if (!fileRepository.existsFileByNameAndUserId(File.ROOT,
+                securityUtil.getCurrentUser().getId())) {
             fileRepository.save(File.getRootFolder(securityUtil.getCurrentUser()));
         }
     }
@@ -116,13 +116,13 @@ public class FileService {
             throw new NotFoundException("Such folder does not exist!");
         }
         Tuple2<String, String> parentAndFolder = extractParentAndFolder(folder);
-        return fileRepository.findFileByNameAndParentAndUser(parentAndFolder.getSecond(),
-                parentAndFolder.getFirst(), securityUtil.getCurrentUser()).getLastModified().isAfter(lastModified);
+        return fileRepository.findFileByNameAndParentAndUserId(parentAndFolder.getSecond(),
+                parentAndFolder.getFirst(), securityUtil.getCurrentUser().getId()).getLastModified().isAfter(lastModified);
     }
 
     public void deleteFileById(String id) {
         fileRepository
-                .findByIdAndUser(id, securityUtil.getCurrentUser())
+                .findByIdAndUserId(id, securityUtil.getCurrentUser().getId())
                 .ifPresentOrElse(z -> {
                     if (z.getIsDirectory()
                             && fileRepository
@@ -142,12 +142,12 @@ public class FileService {
         if (parent.equals("null")) {
             parent = File.ROOT;
         }
-        return fileRepository.existsFileByNameAndParentAndUser(name, parent, securityUtil.getCurrentUser());
+        return fileRepository.existsFileByNameAndParentAndUserId(name, parent, securityUtil.getCurrentUser().getId());
     }
 
     public List<File> findFilesInFolder(String parent) {
         checkAndCreateRoot();
-        return fileRepository.findFilesByParentAndUser(parent,
-                securityUtil.getCurrentUser());
+        return fileRepository.findFilesByParentAndUserId(parent,
+                securityUtil.getCurrentUser().getId());
     }
 }

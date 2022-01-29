@@ -19,9 +19,9 @@ import java.time.Instant;
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class File extends BaseEntity {
     public static final String ROOT = "/";
-    @DBRef
+
     @EqualsAndHashCode.Include
-    private User user;
+    private String userId;
     @Indexed
     @EqualsAndHashCode.Include
     private String parent;
@@ -42,6 +42,6 @@ public class File extends BaseEntity {
                 .setParent(null)
                 .setName(ROOT)
                 .setIsDirectory(true)
-                .setUser(user);
+                .setUserId(user.getId());
     }
 }

@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,8 @@ public class FileController {
 
     @GetMapping("/upload")
     @PreAuthorize("hasRole('USER')")
-    public String showUploadPage(Model model, @RequestParam("parent") String parent) {
+    public String showUploadPage(Model model, @RequestParam(value = "parent",
+            defaultValue = File.ROOT) String parent) {
         model.addAttribute("parent", parent);
         model.addAttribute("file", new File());
         return "file-upload";
