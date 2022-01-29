@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/general.css">
+    <title>My Files</title>
+    <script src="https://kit.fontawesome.com/204035da51.js"
+            crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+</body>
+</html>
+<div class="container-fluid primary-text-color text-center"
+     th:each="file: ${files}">
+    <div class="container-fluid" th:if="*{isDirectory}">
+        <a href="#" th:href="@{/files(parent=${user.enterFolder})}">
+            <img src="../static/img/icons8-opened-folder.svg"
+                 th:src="@{/icons8-opened-folder.svg}" alt="folder">
+        </a>
+
+    </div>
+    <div class="container-fluid" th:unless="*{isDirectory}">
+<!--        <p th:></p>-->
+    </div>
+</div>
+<script>
+    function refresher() {
+        // TODO: send request to check for folder updat
+        // GET /api/files/folder/update?parent= currentFolder &lastModified= previousModificationTime of Folder
+        // if return true, refresh page
+    }
+
+    function openFolder(folder) {
+        // TODO -> redirect to this page but with different parent Query
+    }
+
+    function openFile(file) {
+        // TODO -> forward to the download address of a file
+        // and download file
+    }
+</script>

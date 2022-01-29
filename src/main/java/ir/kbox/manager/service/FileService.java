@@ -9,13 +9,13 @@ import ir.kbox.manager.repository.FileRepository;
 import ir.kbox.manager.util.FileUtil;
 import ir.kbox.manager.util.datastructure.Tuple2;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.Instant;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -139,6 +139,12 @@ public class FileService {
     }
 
     public Boolean doesOverwrite(String parent, String name) {
-        return fileRepository.existsFileByNameAndParentAndUser(name,parent,securityUtil.getCurrentUser());
+        return fileRepository.existsFileByNameAndParentAndUser(name, parent, securityUtil.getCurrentUser());
+    }
+
+    public List<File> findFilesInFolder(String parent) {
+        checkAndCreateRoot();
+        return fileRepository.findFilesByParentAndUser(parent,
+                securityUtil.getCurrentUser());
     }
 }

@@ -1,5 +1,6 @@
 package ir.kbox.manager.controller;
 
+import ir.kbox.manager.controller.dto.FileDto;
 import ir.kbox.manager.model.file.File;
 import ir.kbox.manager.service.FileService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -31,6 +34,15 @@ public class FileController {
             defaultValue = File.ROOT) String parent) {
         file.setParent(parent);
         fileService.uploadFile(file, uploadedFile);
+    }
+
+    @GetMapping
+    @PreAuthorize("hasRole('USER')")
+    public String showMyFiles(Model model, @RequestParam(value = "parent",
+            defaultValue = File.ROOT) String parent) {
+        model.addAttribute("files", fileService.findFilesInFolder(parent).stream()
+                .map(FileDto::new).collect(Collectors.toList()));
+        return "files";
     }
 
 }
