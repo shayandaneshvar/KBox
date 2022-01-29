@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
@@ -21,7 +23,8 @@ public class FileController {
 
     @GetMapping("/upload")
     @PreAuthorize("hasRole('USER')")
-    public String showUploadPage(Model model) {
+    public String showUploadPage(Model model, @RequestParam("parent") String parent) {
+        model.addAttribute("parent", parent);
         model.addAttribute("file", new File());
         return "file-upload";
     }
@@ -31,7 +34,7 @@ public class FileController {
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadFile(File file, @RequestParam("uploadedImage")
             MultipartFile uploadedFile, @RequestParam(value = "parent",
-            defaultValue = File.ROOT) String parent) {
+            defaultValue = File.ROOT) String parent, HttpServletRequest req) {
         file.setParent(parent);
         fileService.uploadFile(file, uploadedFile);
     }
@@ -43,6 +46,7 @@ public class FileController {
         model.addAttribute("files", fileService.findFilesInFolder(parent).stream()
                 .map(FileDto::new).collect(Collectors.toList()));
         model.addAttribute("currentFolder", parent);
+        model.addAttribute("explodedAddress", List.of(parent.split("/")));
         return "files";
     }
 

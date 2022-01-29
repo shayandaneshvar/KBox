@@ -16,14 +16,16 @@
 </head>
 <body class="primary-color">
 
-
+<div th:insert="fragment/header.html :: header"></div>
 <nav aria-label="breadcrumb" class="secondary-color">
-    <ol class="breadcrumb">
+    <ol class="breadcrumb" th:each="folder: ${explodedAddress}">
+        Location:
         <li class="breadcrumb-item active" aria-current="page"
-            th:text="${currentFolder}">/
+            th:text="${folder}">
         </li>
     </ol>
 </nav>
+
 <div class="container-fluid primary-text-color text-center">
     <div
             th:each="file: ${files}">
