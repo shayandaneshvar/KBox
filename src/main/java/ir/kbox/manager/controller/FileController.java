@@ -34,8 +34,8 @@ public class FileController {
     @ResponseStatus(HttpStatus.CREATED)
     public void uploadFile(File file, @RequestParam("uploadedImage")
             MultipartFile uploadedFile, @RequestParam(value = "parent",
-            defaultValue = File.ROOT) String parent, HttpServletRequest req) {
-        file.setParent(parent);
+            defaultValue = File.ROOT) String parent) {
+        file.setParent(parent.replace("\"", ""));
         fileService.uploadFile(file, uploadedFile);
     }
 
