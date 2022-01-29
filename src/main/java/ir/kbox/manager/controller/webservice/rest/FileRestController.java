@@ -19,7 +19,7 @@ public class FileRestController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/upload/folder")
-    @PreAuthorize("hasAnyRole()")
+    @PreAuthorize("isAuthenticated()")
     public String createFolder(@RequestParam("name") String name, @RequestParam(
             value = "parent", defaultValue = File.ROOT) String parentFolder) {
         return fileService.createFolder(name, parentFolder);
@@ -33,14 +33,14 @@ public class FileRestController {
     }
 
     @GetMapping("/folder/update")
-    @PreAuthorize("hasAnyRole()")
+    @PreAuthorize("isAuthenticated()")
     public Boolean hasFolderUpdated(@RequestParam("folder") String folder,
                                     @RequestParam("lastModified") Instant lastModified) {
         return fileService.hasFolderUpdated(folder, lastModified);
     }
 
     @DeleteMapping
-    @PreAuthorize("hasAnyRole()")
+    @PreAuthorize("isAuthenticated()")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteFileById(@RequestParam("id") String id) {
         fileService.deleteFileById(id);

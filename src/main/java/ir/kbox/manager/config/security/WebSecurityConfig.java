@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -54,9 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override // authZ
     protected void configure(HttpSecurity http) throws Exception {
         //XSRF-TOKEN
-        http.csrf().disable();
-
-        http.authorizeRequests().anyRequest().permitAll();
+        http.csrf().disable()
+                .authorizeRequests()
+                .anyRequest()
+                .permitAll();
 
         http.formLogin()
                 .defaultSuccessUrl("/home")
@@ -67,8 +69,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .logoutUrl("/auth/logout")
                 .deleteCookies("JSESSIONID");
-        http.sessionManagement().enableSessionUrlRewriting(false);
-        http.sessionManagement().maximumSessions(50)
+        http.sessionManagement()
+                .enableSessionUrlRewriting(false)
+                .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+                .maximumSessions(50)
                 .sessionRegistry(sessionRegistry());
     }
 

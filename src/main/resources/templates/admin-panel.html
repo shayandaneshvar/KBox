@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
 
 <head>
     <meta charset="UTF-8">
@@ -9,40 +9,47 @@
           crossorigin="anonymous">
     <link rel="stylesheet" href="/css/general.css">
     <title>Admin Dashboard</title>
-    <script src="https://kit.fontawesome.com/204035da51.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/204035da51.js"
+            crossorigin="anonymous"></script>
 
 </head>
 
 <body>
 <div th:insert="fragment/header.html :: header"></div>
 
-<div class="container-fluid primary-text-color text-center">  List of Users </div>
+<div class="container-fluid primary-text-color text-center"> List of Users</div>
 
 <div class="container-fluid">
     <table class="table primary-text-color">
         <thead class="secondary-color">
-            <tr>
-                <th scope="col">Firstname</th>
-                <th scope="col">Lastname</th>
-                <th scope="col">Email </th>
-                <th scope="col">Change Password</th>
-                <th scope="col">Delete User </th>
-            </tr>
+        <tr>
+            <th scope="col">Firstname</th>
+            <th scope="col">Lastname</th>
+            <th scope="col">Email</th>
+            <th scope="col">Change Password</th>
+            <th scope="col">Delete User</th>
+        </tr>
         </thead>
-        <tbody >
-            <tr th:each="user:${usersList}">
-                <td th:text="${user.firstname}">John></td>
-                <td th:text="${user.lastname}">Doe></td>
-                <td th:text="${user.email}">Email@example.com></td>
-                <td> <button type="button" class="button btn btn-success">
-                        <i class="fas fa-cog"></i>
-                    </button></td>
-                <td>
-                    <button type="button" class="button btn btn-danger" th:attr="onclick=|deleteUser('${user.id}','${sessionId}')|">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
-                </td>
-            </tr>
+        <tbody>
+        <tr th:each="user:${usersList}">
+            <td th:text="${user.firstname}">John></td>
+            <td th:text="${user.lastname}">Doe></td>
+            <td th:text="${user.email}">Email@example.com></td>
+            <td>
+                <button type="button" class="button btn btn-success"
+                        th:attr="onclick=|changePassword('${user.id}')|"
+                        onclick="changePassword(0)">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </td>
+            <td>
+                <button type="button" class="button btn btn-danger"
+                        th:attr="onclick=|deleteUser('${user.id}')|"
+                        onclick="deleteUser(0)">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
         </tbody>
     </table>
 </div>
@@ -50,7 +57,7 @@
 </html>
 
 <script>
-    function deleteUser(id, currentSessionID) {
+    function deleteUser(id) {
         const xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (this.status === 204) {
@@ -58,6 +65,20 @@
             }
         };
         xhr.open("DELETE", window.location.href + "/" + id, true);
+        xhr.send();
+    }
+
+    function changePassword(id) {
+        pwd = prompt("Enter Password:")
+        let msg = false;
+        const xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (this.status === 202 && !msg) {
+                msg = true;
+                alert("Password Changed Successfully");
+            }
+        };
+        xhr.open("PUT", window.location.href + "/" + id + "/password?password=" + pwd, true);
         xhr.send();
     }
 
