@@ -42,6 +42,7 @@ public class FileController {
             defaultValue = File.ROOT) String parent) {
         model.addAttribute("files", fileService.findFilesInFolder(parent).stream()
                 .map(FileDto::new).collect(Collectors.toList()));
+        model.addAttribute("currentFolder", parent);
         return "files";
     }
 

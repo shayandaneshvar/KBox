@@ -1,8 +1,12 @@
 :root {
-    --primary-color: #072227;
-    --primary-text-color: #35858B;
-    --secondary-color: #4FBDBA;
-    --secondary-text-color: #AEFEFF;
+    /*--primary-color: #072227;*/
+    /*--primary-text-color: #35858B;*/
+    /*--secondary-color: #4FBDBA;*/
+    /*--secondary-text-color: #AEFEFF;*/
+    --primary-color: #181818;
+    --primary-text-color: #00ADB5;
+    --secondary-color: #294A63;
+    --secondary-text-color: #D6C358;
 }
 
 .up-buttons:hover {
