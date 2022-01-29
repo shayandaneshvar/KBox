@@ -1,5 +1,6 @@
 package ir.kbox.manager.service;
 
+import ir.kbox.manager.controller.exceptions.NotFoundException;
 import ir.kbox.manager.model.user.Roles;
 import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.UserRepository;
@@ -33,5 +34,11 @@ public class UserService {
 
     public void deleteUserById(String id) {
         userRepository.deleteById(id);
+    }
+
+    public void changePassword(String id, String password) {
+        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        user.setPassword(passwordEncoder.encode(password));
+        userRepository.save(user);
     }
 }

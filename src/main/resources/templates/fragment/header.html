@@ -23,7 +23,7 @@
                 <div class="col-1 up-buttons" onclick=location.href="/auth/logout" sec:authorize="isAuthenticated()" >
                     Logout
                 </div>
-                <div class="col-1 up-buttons" onclick=location.href="/adduser" sec:authorize="hasRole('ADMIN')" >
+                <div class="col-1 up-buttons" onclick=location.href="/admin/user" sec:authorize="hasRole('ADMIN')" >
                     Add user
                 </div>
             </div>

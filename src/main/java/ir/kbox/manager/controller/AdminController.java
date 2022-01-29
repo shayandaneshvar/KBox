@@ -31,8 +31,20 @@ public class AdminController {
         model.addAttribute("usersList", users);
         model.addAttribute("sessionId", request.getSession()
                 .getId());
-//        model.addAttribute(users);
         return "admin-panel";
+    }
+
+    @GetMapping(path = {"/user"})
+    @PreAuthorize("hasRole('ADMIN')")
+    public String showAddUserPage(User user) {
+        return "adduser";
+    }
+
+    @PutMapping(path = "/{id}/password")
+    @PreAuthorize("hasRole('ADMIN')")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void changePassword(@PathVariable String id, @RequestParam("password") String password) {
+        userService.changePassword(id, password);
     }
 
     @DeleteMapping("/{id}")

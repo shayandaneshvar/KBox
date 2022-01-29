@@ -13,9 +13,5 @@ public class GeneralController {
         return "index";
     }
 
-    @GetMapping(path= {"/adduser"})
-    @PreAuthorize("hasRole('ADMIN')")
-    public  String getAddUserPage(User user) {
-        return "adduser";
-    }
+
 }
