@@ -12,12 +12,35 @@
     <script src="https://kit.fontawesome.com/204035da51.js"
             crossorigin="anonymous"></script>
 
+    <style>
+        .add-user-button:hover {
+            color: var(--secondary-text-color);
+            cursor: pointer;
+        }
+    </style>
 </head>
 
-<body>
+<body class="primary-color">
+
+<div class="container-fluid primary-text-color text-center">
+
+</div>
+
+
 <div th:insert="fragment/header.html :: header"></div>
 
+
 <div class="container-fluid primary-text-color text-center"> List of Users</div>
+
+<div class="container-fluid primary-text-color text-center">
+    <div class="row">
+        <div class="col-1" onclick=location.href="/admin/user" sec:authorize="hasRole('ADMIN')" >
+            <i class="add-user-button fas fa-user-plus fa-2x">
+            </i>
+        </div>
+    </div>
+
+</div>
 
 <div class="container-fluid">
     <table class="table primary-text-color">
@@ -75,7 +98,10 @@
         xhr.onreadystatechange = function () {
             if (this.status === 202 && !msg) {
                 msg = true;
-                alert("Password Changed Successfully");
+                if (pwd != null ) {
+                    alert("Password Changed Successfully");
+
+                }
             }
         };
         xhr.open("PUT", window.location.href + "/" + id + "/password?password=" + pwd, true);
