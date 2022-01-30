@@ -27,7 +27,6 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@Valid User user, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            System.out.println("sadsd");
             return "redirect:" + request.getRequestURL();
         }
         userService.registerUser(user);

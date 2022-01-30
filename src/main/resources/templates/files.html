@@ -17,7 +17,7 @@
           href="../static/css/general.css">
 
 </head>
-<body class="primary-color">
+<body class="primary-color" onload="JavaScript:timedRefresh(5000);">
 
 <div th:insert="fragment/header.html :: header"></div>
 <nav aria-label="breadcrumb" class="secondary-color container-fluid">
@@ -27,21 +27,15 @@
             <a class="primary-text-color" href="#"
                th:href="@{/files(parent=${previousFolder})}"><i
                     class="fas fa-backward fa-1x"></i> &nbsp;</a>
-            &nbsp; |
         </li>
 
         <li>
-            &nbsp;
             <i class="fas fa-folder-open fa-1x primary-text-color"></i>
-            &nbsp;
         </li>
         <li class="breadcrumb-item active secondary-text-color"
             aria-current="page"
             th:text="${folder}" th:each="folder: ${explodedAddress}">Root
         </li>
-        &nbsp;
-        &nbsp;
-        &nbsp;
 
         <li id="pageLoadDate" class="secondary-text-color invisible"
             aria-current="page"
@@ -100,11 +94,16 @@
 
 </body>
 <script>
-    function refresher() {
-        const loadDate = document.getElementById("pageLoadDate").innerText;
-        // TODO: send request to check for folder update
-        // GET /api/files/folder/update?parent= currentFolder &lastModified= previousModificationTime of Folder
-        // if return true, refresh page
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("refresher()",timeoutPeriod);
+    }
+    async  function refresher() {
+        let parent = new URL(location.href).searchParams.get('parent');
+        // Todo: Change
+        const changed= await fetch("/api/files/folder/update?parent=" + parent + "&lastModified=" +  ).then(res => res.json());
+        if (changed) {
+            location.reload();
+        }
     }
 
     function createFolder(parent) {

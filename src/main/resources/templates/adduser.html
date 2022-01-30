@@ -12,7 +12,7 @@
 <style>
 
     .form {
-        border-color: var(--primary-color);
+        border-color: var(--primary-text-color);
         background-color: var(--secondary-color);
         border-radius: 20px;
         box-sizing: border-box;
@@ -104,15 +104,16 @@
     }
 
 </style>
-<body>
+<body class="primary-color">
 
     <div th:insert="fragment/header.html :: header"></div>
 
-    <div class="container-fluid pt-5">
-        <div class="row justify-content-center pt-5">
-            <form class="form" onsubmit="return validateForm()" th:action="@{/auth/register}" th:object="${user}">
+    <div class="container-fluid pt-5 ">
+        <div class="row justify-content-center pt-5 ">
+
+            <form class="form secondary-text-color" onsubmit="return validateForm()" th:action="@{/auth/register}" th:object="${user}">
                 <div class="subtitle" id="error" ></div>
-                <div class="title">Add user</div>
+                <div class="title secondary-text-color">Add user</div>
                 <div class="input-container ic1">
                     <input id="fname" name="fname" class="input" type="text" th:field="*{firstname}" placeholder="Firstname"/>
                 </div>
