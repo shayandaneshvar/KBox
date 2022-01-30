@@ -99,7 +99,7 @@
                     </div>
                 </a>
                 <a href="#" class="sub-grid-item"
-                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+                   onclick="renameFile(0)" th:attr="onclick=|renameFile('${file.id}')|">
 
                     <div class="justify-content-center">
                         <i class="fas fa-i-cursor fa-1x "></i>
@@ -141,7 +141,7 @@
                     </div>
                 </a>
                 <a href="#" class="sub-grid-item"
-                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+                   onclick="renameFile(0)" th:attr="onclick=|renameFile('${file.id}')|">
 
                     <div class="justify-content-center">
                         <i class="fas fa-i-cursor fa-1x "></i>
@@ -179,10 +179,32 @@
         fetch("/api/files?id=" + id, {method: 'DELETE'})
             .then(res => {
                     if (res.status === 204) {
-                        location.reload()
-                        return;
+                        location.reload();
                     } else if (res.status === 406) {
-                        alert("This folder is not empty. delete files inside and retry!")
+                        alert("This folder is not empty. delete files inside and retry!");
+                    } else {
+                        console.log("unknown delete error!");
+                    }
+                }
+            )
+    }
+
+    async function renameFile(id) {
+        let name = prompt("Enter new name to rename:");
+        console.log(name);
+        if (!name || name.trim() === "") {
+            alert("name cannot be empty")
+            renameFile(id);
+            return;
+        }
+        fetch("/api/files?id=" + id + "&name=" + name, {method: 'POST'})
+            .then(res => {
+                    if (res.status === 202) {
+                        location.reload();
+                    } else if (res.status === 406) {
+                        alert("A file/folder with the same name exists here!");
+                    } else {
+                        console.log("unknown rename error!");
                     }
                 }
             )

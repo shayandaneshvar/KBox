@@ -257,4 +257,18 @@ public class FileService {
         }
         return streamFile(file, rangeStart, rangeEnd, fileSize, responseHeaders);
     }
+
+    public void renameFile(final String id, final String name) {
+        fileRepository.findByIdAndUserId(id, securityUtil.getCurrentUser().getId())
+                .ifPresentOrElse(file -> {
+                            final String finalName = name + FileUtil.getFileExtension(file.getName());
+                            if (checkFileOrFolderExists(file.getParent(), finalName)) {
+                                throw new UnacceptableRequestException("Duplicate file with the same name exists!");
+                            }
+                            fileRepository.save(file.setName(finalName));
+                        }
+                        , () -> {
+                            throw new NotFoundException();
+                        });
+    }
 }

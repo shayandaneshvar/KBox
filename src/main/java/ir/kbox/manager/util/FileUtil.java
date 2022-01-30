@@ -45,21 +45,9 @@ public class FileUtil {
         return file.delete();
     }
 
-    private String getFileExtension(String originalFilename) {
-        return originalFilename.substring(originalFilename.lastIndexOf('.'));
-    }
-
-    public String getFormat(String url) {
-        return url.substring(url.lastIndexOf(".") + 1);
-    }
-
-    public void readAndWrite(final InputStream is, final OutputStream os)
-            throws IOException {
-        byte[] data = new byte[2048];
-        int read = 0;
-        while ((read = is.read(data)) > 0) {
-            os.write(data, 0, read);
-        }
-        os.flush();
+    public String getFileExtension(String originalFilename) {
+        return originalFilename.contains(".") ?
+                originalFilename.substring(originalFilename.lastIndexOf('.'))
+                : "";
     }
 }

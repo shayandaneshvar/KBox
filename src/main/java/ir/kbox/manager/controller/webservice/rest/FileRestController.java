@@ -63,4 +63,11 @@ public class FileRestController {
         fileService.deleteFileById(id);
     }
 
+    @PostMapping
+    @PreAuthorize("isAuthenticated()")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void renameFileById(@RequestParam("id") String id,
+                               @RequestParam("name") String name) {
+        fileService.renameFile(id, name);
+    }
 }
