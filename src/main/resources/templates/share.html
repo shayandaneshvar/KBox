@@ -1,4 +1,6 @@
 <!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <html lang="en">
 <head>
     <head>
@@ -28,18 +30,11 @@
 
     </head>
 </head>
-<body primary-color>
+<body class="primary-color">
     <div th:insert="fragment/header.html :: header"></div>
     <nav aria-label="breadcrumb" class="secondary-color container-fluid">
         <!--    <p class="primary-text-color">Location:</p>-->
         <ol class="breadcrumb">
-            <li th:unless="${previousFolder.isBlank()}">
-                <a class="primary-text-color" href="#"
-                   th:href="@{/files(parent=${previousFolder})}"><i
-                        class="fas fa-backward fa-1x"></i> &nbsp;</a>
-                &nbsp; |
-            </li>
-
             <li>
                 &nbsp;
                 <i class="fas fa-folder-open fa-1x primary-text-color"></i>
@@ -62,9 +57,71 @@
     </nav>
 
 
-    <div class="container-fluid m-5 justify-content-center .overflow-hidden">
+    <div class="container-fluid p-5">
+        <div class="row justify-content-center">
+            <div class="col-4 rounded  p-2 secondary-color" style="border-style: solid ;border-color: var(--primary-text-color)">
+                <div class="row justify-content-between ">
+                    <div class="col secondary-text-color">
+                        <div>
+                            file name:
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div style="display: flex; justify-content: end; padding-right: 10%">
+                            <i class="fas fa-folder fa-4x "></i>
+
+                        </div>
+                    </div>
+                </div>
+                <div>
+
+                    <button sec:authorize="isAuthenticated('ADMIN')" type="button" class="btn normal-btn" style="border-color: #D6C358" onclick="addUser()">
+                        Add User
+
+                        <span class="badge primary-text-color secondary-color ">
+                        <i class="fas fa-user-plus fa-1_6xx"> </i>
+                    </span>
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table primary-text-color">
+                        <thead class="">
+                        <tr>
+                            <th scope="col">Username</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Remove</th>
+                        </tr>
+                        </thead>
+                        <tbody class="secondary-text-color">
+                        <tr th:each="user:${usersList}">
+                            <td th:text="${user.username}">John</td>
+                            <td th:text="${user.email}">Email@example.com</td>
+                            <td>
+                                <button type="button" class="button btn btn-danger"
+                                        th:attr="onclick=|deleteUser('${user.id}')|"
+                                        onclick="deleteUser(0)">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
 
     </div>
+
+<script>
+    function addUser() {
+        //Todo: Fill
+    }
+
+    function deleteUSer(){
+        //Todo: Fill
+    }
+</script>
 
 </body>
 </html>
