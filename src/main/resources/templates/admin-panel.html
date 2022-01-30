@@ -39,6 +39,7 @@
         <tr>
             <th scope="col">Firstname</th>
             <th scope="col">Lastname</th>
+            <th scope="col">Username</th>
             <th scope="col">Email</th>
             <th scope="col">Change Password</th>
             <th scope="col">Delete User</th>
@@ -46,9 +47,10 @@
         </thead>
         <tbody>
         <tr th:each="user:${usersList}">
-            <td th:text="${user.firstname}">John></td>
+            <td th:text="${user.firstname}">John</td>
             <td th:text="${user.lastname}">Doe></td>
-            <td th:text="${user.email}">Email@example.com></td>
+            <td th:text="${user.username}">JohnDoe</td>
+            <td th:text="${user.email}">Email@example.com</td>
             <td>
                 <button type="button" class="button btn btn-success"
                         th:attr="onclick=|changePassword('${user.id}')|"
