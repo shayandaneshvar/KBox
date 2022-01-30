@@ -1,5 +1,6 @@
 package ir.kbox.manager.controller;
 
+import ir.kbox.manager.controller.dto.FullFileDto;
 import ir.kbox.manager.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/files/share")
 @RequiredArgsConstructor(onConstructor_ = @Autowired)
@@ -19,8 +22,11 @@ public class FileSharingController {
     @GetMapping
     @PreAuthorize("isAuthenticated()")
     public String showSharingPage(@RequestParam("id") String fileId, Model model) {
-        model.addAttribute("fileId",fileId);
-        // TODO: 1/30/2022  
+        model.addAttribute("fileId", fileId);
+        FullFileDto file = fileService.getFileDetailsById(fileId);
+        model.addAttribute("file", file);
+        model.addAttribute("explodedAddress",
+                List.of(("Root" + file.getParent()).split("/")));
         return "share";
     }
 }

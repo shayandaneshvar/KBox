@@ -19,17 +19,10 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 @Accessors(chain = true)
 @Document(collection = "users")
-public class User extends BaseEntity {
-    @NotEmpty
-    @Size(min = 2)
-    @Indexed(unique = true)
-    private String username;
-    @Email
-    @Indexed(unique = true)
-    private String email;
+@EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
+public class User extends BaseUser {
     private String password;
     private String firstname;
     private String lastname;

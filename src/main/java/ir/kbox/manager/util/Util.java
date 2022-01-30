@@ -1,14 +1,19 @@
 package ir.kbox.manager.util;
 
-import lombok.experimental.UtilityClass;
-
 import javax.servlet.http.HttpServletRequest;
 
-@UtilityClass
-public class Util {
-    public String getRequestBaseAddress(HttpServletRequest req) {
+public final class Util {
+    private Util() {
+        throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
+    }
+
+    public static String getRequestBaseAddress(HttpServletRequest req) {
         return req.getRequestURL()
                 .toString()
                 .replace(req.getRequestURI(), "");
+    }
+
+    public static Runnable throwException(RuntimeException exception) {
+        throw exception;
     }
 }

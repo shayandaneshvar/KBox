@@ -1,13 +1,16 @@
 package ir.kbox.manager.service;
 
 import ir.kbox.manager.config.security.SecurityUtil;
+import ir.kbox.manager.controller.dto.FullFileDto;
 import ir.kbox.manager.controller.exceptions.AlreadyExistsException;
 import ir.kbox.manager.controller.exceptions.NotFoundException;
 import ir.kbox.manager.controller.exceptions.OperationFailedException;
 import ir.kbox.manager.controller.exceptions.UnacceptableRequestException;
 import ir.kbox.manager.model.file.File;
+import ir.kbox.manager.model.user.BaseUser;
 import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.FileRepository;
+import ir.kbox.manager.repository.UserRepository;
 import ir.kbox.manager.util.FileUtil;
 import ir.kbox.manager.util.datastructure.Tuple2;
 import lombok.RequiredArgsConstructor;
@@ -25,12 +28,14 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class FileService {
     private final FileRepository fileRepository;
     private final SecurityUtil securityUtil;
+    private final UserRepository userRepository;
     private static final int FILE_BUFFER_SIZE = 1024;
 
     @Transactional
@@ -270,5 +275,34 @@ public class FileService {
                         , () -> {
                             throw new NotFoundException();
                         });
+    }
+
+    public FullFileDto getFileDetailsById(String fileId) {
+        File file = fileRepository.findByIdAndUserId(fileId,
+                securityUtil.getCurrentUser().getId())
+                .orElseThrow(NotFoundException::new);
+        return new FullFileDto(file);
+    }
+
+    public void shareWithUser(String fileId, String username) {
+        BaseUser user = userRepository
+                .findUserByEmailOrUsername(username)
+                .map(BaseUser::new)
+                .orElseThrow(NotFoundException::new);
+
+        File file = fileRepository
+                .findByIdAndUserId(fileId, securityUtil.getCurrentUser().getId())
+                .orElseThrow(NotFoundException::new);
+        fileRepository.save(file.addToSharedUsers(user));
+    }
+
+    public void removeUserFromSharedUsers(String userId, String fileId) {
+        File file = fileRepository
+                .findByIdAndUserId(fileId, securityUtil.getCurrentUser().getId())
+                .orElseThrow(NotFoundException::new);
+        file.setSharedUsers(file.getSharedUsers().stream()
+                .filter(z -> !z.getId().equals(userId))
+                .collect(Collectors.toSet()));
+        fileRepository.save(file);
     }
 }

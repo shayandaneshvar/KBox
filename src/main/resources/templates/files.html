@@ -106,7 +106,7 @@
                     </div>
                 </a>
                 <a href="#" class="sub-grid-item"
-                   th:href="@{/api/files/share/{id}(id=${file.id},sessionId=${sessionId})}">
+                   th:href="@{/files/share(id=${file.id})}">
 
                     <div class="justify-content-center">
                         <i class="fas fa-share fa-1x"></i>
@@ -148,7 +148,7 @@
                     </div>
                 </a>
                 <a href="#" class="sub-grid-item"
-                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+                   th:href="@{/files/share(id=${file.id})}">
 
                     <div class="justify-content-center">
                         <i class="fas fa-share fa-1x"></i>
@@ -224,9 +224,9 @@
     }
 
     function createFolder(parent) {
-        const name = prompt("Enter Folder name:")
+        const name = prompt("Enter Folder name:");
         if (!name || name.trim() === "") {
-            alert("Folder name cannot be empty!")
+            alert("Folder name cannot be empty!");
             createFolder(parent);
             return;
         }

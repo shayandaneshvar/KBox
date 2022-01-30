@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <html lang="en">
 <head>
@@ -31,95 +32,125 @@
     </head>
 </head>
 <body class="primary-color">
-    <div th:insert="fragment/header.html :: header"></div>
-    <nav aria-label="breadcrumb" class="secondary-color container-fluid">
-        <!--    <p class="primary-text-color">Location:</p>-->
-        <ol class="breadcrumb">
-            <li>
-                &nbsp;
-                <i class="fas fa-folder-open fa-1x primary-text-color"></i>
-                &nbsp;
-            </li>
-            <li class="breadcrumb-item active secondary-text-color"
-                aria-current="page"
-                th:text="${folder}" th:each="folder: ${explodedAddress}">Root
-            </li>
+<div th:insert="fragment/header.html :: header"></div>
+<nav aria-label="breadcrumb" class="secondary-color container-fluid">
+    <ol class="breadcrumb">
+        &nbsp;
+        <li>
             &nbsp;
+            <i class="fas fa-folder-open fa-1x primary-text-color"></i>
             &nbsp;
-            &nbsp;
+        </li>
+        <li class="breadcrumb-item active secondary-text-color"
+            aria-current="page"
+            th:text="${folder}" th:each="folder: ${explodedAddress}">Root
+        </li>
+    </ol>
 
-            <li id="pageLoadDate" class="secondary-text-color invisible"
-                aria-current="page"
-                th:text="${pageLoadDate}"> time
-            </li>
-        </ol>
-
-    </nav>
+</nav>
 
 
-    <div class="container-fluid p-5">
-        <div class="row justify-content-center">
-            <div class="col-4 rounded  p-2 secondary-color" style="border-style: solid ;border-color: var(--primary-text-color)">
-                <div class="row justify-content-between ">
-                    <div class="col secondary-text-color">
-                        <div>
-                            file name:
-                        </div>
-                    </div>
-                    <div class="col">
-                        <div style="display: flex; justify-content: end; padding-right: 10%">
-                            <i class="fas fa-folder fa-4x "></i>
-
-                        </div>
+<div class="container-fluid p-5">
+    <div class="row justify-content-center">
+        <div class="col-4 rounded  p-2 primary-color"
+             style="border-style: solid ;border-color: var(--primary-text-color)">
+            <div class="row justify-content-between ">
+                <div class="col secondary-text-color">
+                    <div th:text="${file.name}">
+                        my file/folder name
                     </div>
                 </div>
-                <div>
-
-                    <button sec:authorize="isAuthenticated('ADMIN')" type="button" class="btn normal-btn" style="border-color: #D6C358" onclick="addUser()">
-                        Add User
-
-                        <span class="badge primary-text-color secondary-color ">
-                        <i class="fas fa-user-plus fa-1_6xx"> </i>
-                    </span>
-                    </button>
+                <div class="col">
+                    <div class="secondary-text-color"
+                         style="display: flex; justify-content: end; padding-right: 10%">
+                        <i class="fas fa-folder fa-4x pt-4 pr-4"
+                           th:if="${file.isDirectory}"></i>
+                        <i class="fas fa-file fa-4x pt-4 pr-4"
+                           th:unless="${file.isDirectory}"></i>
+                    </div>
                 </div>
-                <div class="table-responsive">
-                    <table class="table primary-text-color">
-                        <thead class="">
-                        <tr>
-                            <th scope="col">Username</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Remove</th>
-                        </tr>
-                        </thead>
-                        <tbody class="secondary-text-color">
-                        <tr th:each="user:${usersList}">
-                            <td th:text="${user.username}">John</td>
-                            <td th:text="${user.email}">Email@example.com</td>
-                            <td>
-                                <button type="button" class="button btn btn-danger"
-                                        th:attr="onclick=|deleteUser('${user.id}')|"
-                                        onclick="deleteUser(0)">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
-        </div>
+            <div>
 
+                <button sec:authorize="isAuthenticated()" type="button"
+                        class="btn normal-btn "
+                        onclick="addUserToShare(0)"
+                        th:attr="onclick=|addUserToShare('${file.id}')|">
+                    Add User
+
+                    <span class="badge primary-text-color secondary-color ">
+                        <i class="fas fa-user-plus fa-1_6x"> </i>
+                    </span>
+                </button>
+            </div>
+
+            <!--     if empty:  -->
+            <div class="alert secondary-text-color bold"
+                 th:if="${#lists.isEmpty(file.sharedUsers)}">
+                <i class="fas fa-exclamation-triangle fa-6x"> &nbsp; &nbsp;</i>
+                Shared with no one!
+            </div>
+
+            <div class="table-responsive" th:unless="${#lists.isEmpty(file.sharedUsers)}">
+                <table class="table primary-text-color">
+                    <thead class="">
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Remove</th>
+                    </tr>
+                    </thead>
+                    <tbody class="secondary-text-color">
+                    <tr th:each="user:${file.sharedUsers}">
+                        <td th:text="${user.username}">John</td>
+                        <td th:text="${user.email}">Email@example.com</td>
+                        <td>
+                            <button type="button" class="button btn btn-danger"
+                                    th:attr="onclick=|deleteUserFromShare('${user.id}','${file.id}')|"
+                                    onclick="deleteUserFromShare(0,0)">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
 
+</div>
+
 <script>
-    function addUser() {
-        //Todo: Fill
+    function addUserToShare(fileId) {
+        let username = prompt("Enter username or email of the user that you want to share with:");
+        if (!username || username.trim() === "") {
+            alert("username or email cannot be empty");
+            return;
+        }
+        fetch("/api/files/share/user?username=" + username + "&fileId=" + fileId, {method: 'PUT'})
+            .then(res => {
+                    if (res.status === 202) {
+                        location.reload();
+                    } else {
+                        console.log("unknown delete error!");
+                        alert("No such user exists!");
+                    }
+                }
+            )
     }
 
-    function deleteUSer(){
-        //Todo: Fill
+    function deleteUserFromShare(userId, fileId) {
+        fetch("/api/files/share/user?userId=" + userId + "&fileId=" + fileId, {method: 'DELETE'})
+            .then(res => {
+                    if (res.status === 204) {
+                        location.reload();
+                    } else {
+                        console.log("unknown delete error!");
+                        alert("No such user exists!");
+                    }
+                }
+            )
     }
 </script>
 

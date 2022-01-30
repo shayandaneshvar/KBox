@@ -20,11 +20,12 @@ public class Bootstrapper implements CommandLineRunner {
     public void run(String... args) throws Exception {
         if (!userRepository.existsUserByUsername("admin")) {
             userService.saveUser(new User()
-                    .setFirstname("Admin name")
-                    .setLastname("Admin Last name")
-                    .setEmail("example@example.com")
-                    .setUsername("admin")
-                    .setPassword("password"),
+                            .setFirstname("Admin name")
+                            .setLastname("Admin Last name")
+                            .setPassword("password")
+                            .setUsername("admin")
+                            .setEmail("example@example.com")
+                            .cast(),
                     List.of(Roles.USER, Roles.ADMIN));
         }
     }

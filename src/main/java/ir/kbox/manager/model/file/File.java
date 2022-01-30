@@ -1,6 +1,7 @@
 package ir.kbox.manager.model.file;
 
 import ir.kbox.manager.model.BaseEntity;
+import ir.kbox.manager.model.user.BaseUser;
 import ir.kbox.manager.model.user.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -36,7 +37,7 @@ public class File extends BaseEntity {
     private Visibility visibility = Visibility.STRICT;
     private Instant creationDate;
     private Instant lastModified;
-    private Set<String> sharedUserIds = new HashSet<>();
+    private Set<BaseUser> sharedUsers = new HashSet<>();
 
     public static File getRootFolder(User user) {
         return new File().setCreationDate(Instant.now())
@@ -45,5 +46,10 @@ public class File extends BaseEntity {
                 .setName(ROOT)
                 .setIsDirectory(true)
                 .setUserId(user.getId());
+    }
+
+    public File addToSharedUsers(BaseUser user) {
+        sharedUsers.add(user);
+        return this;
     }
 }

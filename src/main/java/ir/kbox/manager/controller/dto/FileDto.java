@@ -22,6 +22,10 @@ public class FileDto {
 
     public FileDto(File file) {
         BeanUtils.copyProperties(file, this);
+        loadFolderProperties();
+    }
+
+    protected void loadFolderProperties() {
         if (parent == null) {
             parent = "";
         } else if (!parent.equals(File.ROOT)) {
@@ -34,7 +38,6 @@ public class FileDto {
             return;
         }
         previousFolder = ExtractPreviousFolderFromParent(parent);
-
     }
 
     public static String ExtractPreviousFolderFromParent(String parent) {

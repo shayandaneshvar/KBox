@@ -22,7 +22,7 @@ html, body {
 }
 
 .primary-color {
-    background-color: var(--primary-color);
+    background-color: var(--primary-color) !important;
 }
 
 .primary-text-color {
