@@ -45,12 +45,17 @@ public class FileService {
                 throw new NotFoundException("Such parent Folder does not exist!");
             }
         }
-        return fileRepository.save(new File().setIsDirectory(true)
+        String result = fileRepository.save(new File().setIsDirectory(true)
                 .setLastModified(Instant.now())
                 .setCreationDate(Instant.now())
                 .setName(name).setParent(parentFolder)
                 .setUserId(securityUtil.getCurrentUser().getId()))
                 .getName();
+        var parentAndName = extractParentAndFolder(parentFolder);
+        fileRepository.save(fileRepository.findFileByNameAndParentAndUserId(parentAndName.getSecond()
+                , parentAndName.getFirst(), securityUtil.getCurrentUser().getId())
+                .setLastModified(Instant.now()));
+        return result;
     }
 
     public boolean checkFileOrFolderExists(String parent, String folderName) {

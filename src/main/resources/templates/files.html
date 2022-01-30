@@ -27,15 +27,21 @@
             <a class="primary-text-color" href="#"
                th:href="@{/files(parent=${previousFolder})}"><i
                     class="fas fa-backward fa-1x"></i> &nbsp;</a>
+            &nbsp; |
         </li>
 
         <li>
+            &nbsp;
             <i class="fas fa-folder-open fa-1x primary-text-color"></i>
+            &nbsp;
         </li>
         <li class="breadcrumb-item active secondary-text-color"
             aria-current="page"
             th:text="${folder}" th:each="folder: ${explodedAddress}">Root
         </li>
+        &nbsp;
+        &nbsp;
+        &nbsp;
 
         <li id="pageLoadDate" class="secondary-text-color invisible"
             aria-current="page"
@@ -88,20 +94,28 @@
         </a>
 
     </div>
-    <div class="alert secondary-text-color bold" th:if="${#lists.isEmpty(files)}">
-        <i class="fas fa-exclamation-triangle fa-6x"> &nbsp; &nbsp;</i> This Folder is Empty!</div>
+    <div class="alert secondary-text-color bold"
+         th:if="${#lists.isEmpty(files)}">
+        <i class="fas fa-exclamation-triangle fa-6x"> &nbsp; &nbsp;</i> This
+        Folder is Empty!
+    </div>
 </div>
 
 </body>
 <script>
     function timedRefresh(timeoutPeriod) {
-        setTimeout("refresher()",timeoutPeriod);
+        setInterval(refresher, timeoutPeriod);
     }
-    async  function refresher() {
+
+    async function refresher() {
+        const loadDate = document.getElementById("pageLoadDate").innerHTML;
         let parent = new URL(location.href).searchParams.get('parent');
-        // Todo: Change
-        const changed= await fetch("/api/files/folder/update?parent=" + parent + "&lastModified=" +  ).then(res => res.json());
+        console.log("loadDate: " + loadDate)
+        const changed = await fetch("/api/files/folder/update?folder=" + parent
+            + "&lastModified=" + loadDate).then(res => res.json());
+        console.log(changed);
         if (changed) {
+            clearInterval(refresher)
             location.reload();
         }
     }

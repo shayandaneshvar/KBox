@@ -34,7 +34,7 @@ public class FileRestController {
                                                               @RequestHeader(value = "Range",
                                                                       required = false) String rangeHeader) {
         User user = securityUtil.checkSessionAndGetUser(sessionId);
-        return fileService.getFileDownloadStream(id, rangeHeader,user);
+        return fileService.getFileDownloadStream(id, rangeHeader, user);
     }
 
     @GetMapping("/upload/file")
@@ -46,8 +46,13 @@ public class FileRestController {
 
     @GetMapping("/folder/update")
     @PreAuthorize("isAuthenticated()")
-    public Boolean hasFolderUpdated(@RequestParam("folder") String folder,
-                                    @RequestParam("lastModified") Instant lastModified) {
+    public Boolean hasFolderUpdated(
+            @RequestParam(value = "folder", defaultValue = File.ROOT)
+                    String folder,
+            @RequestParam("lastModified") Instant lastModified) {
+        if (folder.equals("null")) {
+            folder = File.ROOT;
+        }
         return fileService.hasFolderUpdated(folder, lastModified);
     }
 
