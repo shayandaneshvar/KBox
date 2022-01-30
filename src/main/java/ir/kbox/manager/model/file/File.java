@@ -7,10 +7,11 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -35,6 +36,7 @@ public class File extends BaseEntity {
     private Visibility visibility = Visibility.STRICT;
     private Instant creationDate;
     private Instant lastModified;
+    private Set<String> sharedUserIds = new HashSet<>();
 
     public static File getRootFolder(User user) {
         return new File().setCreationDate(Instant.now())
