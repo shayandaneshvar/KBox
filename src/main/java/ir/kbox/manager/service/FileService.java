@@ -305,4 +305,9 @@ public class FileService {
                 .collect(Collectors.toSet()));
         fileRepository.save(file);
     }
+
+    public List<User> findSharedUsersOfUser() {
+        throw new RuntimeException();
+        // TODO: 1/31/2022  
+    }
 }

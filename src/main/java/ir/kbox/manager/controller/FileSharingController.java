@@ -1,6 +1,7 @@
 package ir.kbox.manager.controller;
 
 import ir.kbox.manager.controller.dto.FullFileDto;
+import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,13 @@ public class FileSharingController {
         model.addAttribute("explodedAddress",
                 List.of(("Root" + file.getParent()).split("/")));
         return "share";
+    }
+
+    @GetMapping
+    @PreAuthorize("isAuthenticated()")
+    public String showSharedUsers(Model model) {
+        List<User> users = fileService.findSharedUsersOfUser();
+        model.addAttribute("users",users);
+        return "shared-users";
     }
 }

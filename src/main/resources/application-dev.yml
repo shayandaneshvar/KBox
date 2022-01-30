@@ -1,0 +1,5 @@
+server:
+  port: 8192
+  error:
+    include-message: always
+

@@ -1,7 +1,9 @@
 package ir.kbox.manager.repository;
 
 import ir.kbox.manager.model.file.File;
+import ir.kbox.manager.model.user.BaseUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -26,4 +28,9 @@ public interface FileRepository extends MongoRepository<File, String> {
     Boolean existsByParent(String parent);
 
     List<File> findFilesByParentAndUserId(String parent, String currentUser);
+
+    @Query(fields = "userId")
+    List<File> findFilesBySharedUsersContaining(BaseUser baseUser);
+
+
 }

@@ -17,10 +17,6 @@ spring:
   profiles:
     active: default, dev
 
-server:
-  port: 8192
-  error:
-    include-message: always
 
 
 

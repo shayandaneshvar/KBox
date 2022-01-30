@@ -30,38 +30,31 @@
 
 
 </head>
-<body class="primary-color" onload="JavaScript:timedRefresh(5000);">
+<body class="primary-color">
 
-    <div th:insert="fragment/header.html :: header"></div>
-    <div class="container-fluid m-5 justify-content-center .overflow-hidden">
-        <div class="grid-container justify-content-center">
+<div th:insert="fragment/header.html :: header"></div>
+<div class="container-fluid m-5 justify-content-center .overflow-hidden">
+    <div class="grid-container justify-content-center">
 
-            <div class=" grid-item" th:each="user: ${users}">
-                <a href="#" >
-                    <div class="justify-content-center">
-                        <div>
-                            <i class="fas fa-user fa-4x fa-center-tall"></i>
+        <div class=" grid-item" th:each="user: ${users}">
+            <a href="#" th:href="@{/files/share/list(userId=${user.id})}">
+                <div class="justify-content-center">
+                    <div>
+                        <i class="fas fa-user fa-4x fa-center-tall"></i>
 
-                        </div>
                     </div>
-                    <div class="row left-text" th:text="${user.name}">
-                        User
-                    </div>
-                </a>
+                </div>
+                <div class="row left-text">
+                    <p th:text="${user.username}">username</p>
+                    <p th:text="${user.email}">some@email.com</p>
+                </div>
+            </a>
 
-            </div>
         </div>
     </div>
+</div>
 </body>
 <script>
-    function timedRefresh(timeoutPeriod) {
-        setInterval(refresher, timeoutPeriod);
-    }
-
-    async function refresher() {
-        // Todo: write refresher function
-
-    }
 
 </script>
 </html>

@@ -1,4 +1,24 @@
+server:
+  port: 80
+  error:
+    include-message: always
+
 spring:
+  application:
+    name: manager
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 200MB
+  data:
+    mongodb:
+      host: ${MONGO_LOCATION:localhost}
+      port: ${MONGO_PORT:27017}
+      #      uri: mongodb://${MONGO_LOCATION:localhost}/dapixi
+      #      username: dapixi
+      #      password: ????
+      database: kbox
   devtools:
     livereload:
       enabled: false
