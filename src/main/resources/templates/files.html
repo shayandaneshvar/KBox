@@ -91,8 +91,8 @@
             </a>
             <!--            options     -->
             <div class="sub-grid-container justify-content-center ">
-                <a href="#" class="sub-grid-item"
-                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+                <a href="#" class="sub-grid-item" onclick="deleteFile(0)"
+                   th:attr="onclick=|deleteFile('${file.id}')|">
 
                     <div class="justify-content-center">
                         <i class="fas fa-trash fa-1x "></i>
@@ -133,8 +133,8 @@
             </a>
             <!--            options     -->
             <div class="sub-grid-container justify-content-center ">
-                <a href="#" class="sub-grid-item"
-                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+                <a href="#" class="sub-grid-item" onclick="deleteFile(0)"
+                   th:attr="onclick=|deleteFile('${file.id}')|">
 
                     <div class="justify-content-center">
                         <i class="fas fa-trash fa-1x "></i>
@@ -173,6 +173,19 @@
 <script>
     function timedRefresh(timeoutPeriod) {
         setInterval(refresher, timeoutPeriod);
+    }
+
+    async function deleteFile(id) {
+        fetch("/api/files?id=" + id, {method: 'DELETE'})
+            .then(res => {
+                    if (res.status === 204) {
+                        location.reload()
+                        return;
+                    } else if (res.status === 406) {
+                        alert("This folder is not empty. delete files inside and retry!")
+                    }
+                }
+            )
     }
 
     async function refresher() {

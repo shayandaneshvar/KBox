@@ -3,6 +3,8 @@ package ir.kbox.manager.util.datastructure;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+// nullable pair
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class Tuple2<T, U> {

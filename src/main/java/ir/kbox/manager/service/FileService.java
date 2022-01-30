@@ -4,6 +4,7 @@ import ir.kbox.manager.config.security.SecurityUtil;
 import ir.kbox.manager.controller.exceptions.AlreadyExistsException;
 import ir.kbox.manager.controller.exceptions.NotFoundException;
 import ir.kbox.manager.controller.exceptions.OperationFailedException;
+import ir.kbox.manager.controller.exceptions.UnacceptableRequestException;
 import ir.kbox.manager.model.file.File;
 import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.FileRepository;
@@ -145,8 +146,8 @@ public class FileService {
                 .ifPresentOrElse(z -> {
                     if (z.getIsDirectory()
                             && fileRepository
-                            .existsByParent(z.getParent() + "/" + z.getName() + "/")) {
-                        throw new OperationFailedException("This folder is not empty");
+                            .existsByParent(z.getParent() + "/" + z.getName())) {
+                        throw new UnacceptableRequestException("This folder is not empty");
                     }
                     if (!z.getIsDirectory()) {
                         FileUtil.deleteFile(z.getAddress());
