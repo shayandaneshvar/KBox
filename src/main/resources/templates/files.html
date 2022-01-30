@@ -2,10 +2,16 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 
 <head>
-    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/fav/apple-touch-icon.png}" href="../static/fav/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/fav/favicon-32x32.png}" href="../static/fav/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/fav/favicon-16x16.png}" href="../static/fav/favicon-16x16.png">
-    <link rel="manifest" th:href="@{/fav/site.webmanifest}" href="../static/fav/site.webmanifest">
+    <link rel="apple-touch-icon" sizes="180x180"
+          th:href="@{/fav/apple-touch-icon.png}"
+          href="../static/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32"
+          th:href="@{/fav/favicon-32x32.png}"
+          href="../static/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16"
+          th:href="@{/fav/favicon-16x16.png}"
+          href="../static/fav/favicon-16x16.png">
+    <!--    <link rel="manifest" th:href="@{/fav/site.webmanifest}" href="../static/fav/site.webmanifest">-->
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -71,22 +77,52 @@
 </a>
 <div class="container-fluid m-5 justify-content-center .overflow-hidden">
     <div class="grid-container justify-content-center">
-        <a href="#" th:each="file: ${files}" th:if="${file.isDirectory}"
-           th:href="@{/files(parent=${file.enterFolder})}">
-            <div class=" grid-item">
+
+
+        <div class=" grid-item" th:each="file: ${files}"
+             th:if="${file.isDirectory}">
+            <a href="#" th:href="@{/files(parent=${file.enterFolder})}">
                 <div class="justify-content-center">
                     <i class="fas fa-folder fa-4x fa-center-fat"></i>
                 </div>
                 <div class="row left-text" th:text="${file.name}">
                     Folder
                 </div>
-            </div>
-        </a>
-        <a href="#"
-           th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}"
-           th:each="file: ${files}" th:unless="${file.isDirectory}">
+            </a>
+            <!--            options     -->
+            <div class="sub-grid-container justify-content-center ">
+                <a href="#" class="sub-grid-item"
+                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
 
-            <div class=" grid-item">
+                    <div class="justify-content-center">
+                        <i class="fas fa-trash fa-1x "></i>
+                    </div>
+                </a>
+                <a href="#" class="sub-grid-item"
+                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+
+                    <div class="justify-content-center">
+                        <i class="fas fa-i-cursor fa-1x "></i>
+                    </div>
+                </a>
+                <a href="#" class="sub-grid-item"
+                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+
+                    <div class="justify-content-center">
+                        <i class="fas fa-share fa-1x"></i>
+                    </div>
+                </a>
+            </div>
+
+        </div>
+
+
+        <div class="grid-item" th:each="file: ${files}"
+             th:unless="${file.isDirectory}">
+
+            <a href="#"
+               th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+
                 <div class="justify-content-center">
                     <i class="fas fa-file fa-4x fa-center-tall"></i>
                 </div>
@@ -94,10 +130,38 @@
                      th:text="${file.name}">
                     Filesdasad
                 </div>
+            </a>
+            <!--            options     -->
+            <div class="sub-grid-container justify-content-center ">
+                <a href="#" class="sub-grid-item"
+                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+
+                    <div class="justify-content-center">
+                        <i class="fas fa-trash fa-1x "></i>
+                    </div>
+                </a>
+                <a href="#" class="sub-grid-item"
+                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+
+                    <div class="justify-content-center">
+                        <i class="fas fa-i-cursor fa-1x "></i>
+                    </div>
+                </a>
+                <a href="#" class="sub-grid-item"
+                   th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+
+                    <div class="justify-content-center">
+                        <i class="fas fa-share fa-1x"></i>
+                    </div>
+                </a>
             </div>
-        </a>
+
+        </div>
 
     </div>
+
+
+    <!--     if empty:  -->
     <div class="alert secondary-text-color bold"
          th:if="${#lists.isEmpty(files)}">
         <i class="fas fa-exclamation-triangle fa-6x"> &nbsp; &nbsp;</i> This

@@ -46,6 +46,15 @@ html, body {
     row-gap: 6rem;
     grid-template-columns: repeat(4, 4rem);
 }
+.sub-grid-container {
+    margin-top: 1rem;
+    width: 100%;
+    display: grid;
+    /*grid-gap: 15rem;*/
+    column-gap: 3rem;
+    row-gap: 6rem;
+    grid-template-columns: repeat(3, 2rem);
+}
 
 .grid-item {
     background-color: var(--primary-color);
@@ -58,12 +67,24 @@ html, body {
     font-size: 150%;
     transition-duration: 1s;
 }
+
+.sub-grid-item {
+    background-color: inherit;
+    color: var(--primary-color);
+    /*border-color: var(--primary-text-color);*/
+    /*border-radius: 3%;*/
+    /*border-width: 0.2rem;*/
+    /*border-style: solid;*/
+    padding: 0.2rem 1rem ;
+    /*font-size: 150%;*/
+    transition-duration: 1s;
+}
 .grid-item:hover{
     transform: skew(-3deg) scale(1.1) rotate(-3deg) translate(0.6rem);
     transition: ease-in-out;
     transition-duration: 500ms;
     background-color: var(--secondary-color);
-    color: var(--primary-text-color);
+    /*color: var(--primary-text-color);*/
     border-color: var(--secondary-text-color);
 }
 /* 4x */
@@ -81,6 +102,10 @@ html, body {
 
 a{
     text-decoration: none;
+    color: inherit;
+}
+a:hover{
+    color: var(--primary-text-color);
 }
 
 .left-text{
