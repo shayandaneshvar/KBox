@@ -49,7 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) throws Exception {
         web.debug(false)
                 .ignoring()
-                .antMatchers("/**/*.svg", "/**/*.js", "/**/*.css");
+                .antMatchers("/**/*.svg", "/**/*.js", "/**/*.css",
+                        "/**/*.png", "/**/*.jpg", "/**/*.jpeg", "/**/*.ico",
+                        "/**/*.webmanifest");
     }
 
     @Override // authZ
