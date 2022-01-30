@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 
 <head>
     <meta charset="UTF-8">
@@ -7,7 +8,7 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/general.css">
+    <link rel="stylesheet" th:href="@{/css/general.css}" href="../static/css/general.css">
     <title>Admin Dashboard</title>
     <script src="https://kit.fontawesome.com/204035da51.js"
             crossorigin="anonymous"></script>
@@ -30,17 +31,14 @@
 <div th:insert="fragment/header.html :: header"></div>
 
 
-<div class="container-fluid primary-text-color text-center"> List of Users</div>
+<div class="container-fluid secondary-text-color secondary-color text-center"> List of Users</div>
 
-<div class="container-fluid primary-text-color text-center">
-    <div class="row">
-        <div class="col-1" onclick=location.href="/admin/user" sec:authorize="hasRole('ADMIN')" >
-            <i class="add-user-button fas fa-user-plus fa-2x">
-            </i>
-        </div>
-    </div>
 
-</div>
+<button sec:authorize="hasRole('ADMIN')" type="button" class="btn normal-btn" onclick=location.href="/admin/user">
+    Add User <span class="badge primary-text-color">
+                    <i class="fas fa-user-plus fa-1_6xx"></i>
+                </span>
+</button>
 
 <div class="container-fluid">
     <table class="table primary-text-color">

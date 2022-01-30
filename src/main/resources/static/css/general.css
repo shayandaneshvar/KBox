@@ -103,3 +103,7 @@ a{
     color: var(--primary-text-color) !important;
     background-color: var(--secondary-color);
 }
+
+.fa-1_6x {
+    font-size: 1.6em !important;
+}
