@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <head>
+        <link rel="apple-touch-icon" sizes="180x180"
+              th:href="@{/fav/apple-touch-icon.png}"
+              href="../static/fav/apple-touch-icon.png">
+        <link rel="icon" type="image/png" sizes="32x32"
+              th:href="@{/fav/favicon-32x32.png}"
+              href="../static/fav/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16"
+              th:href="@{/fav/favicon-16x16.png}"
+              href="../static/fav/favicon-16x16.png">
+        <!--    <link rel="manifest" th:href="@{/fav/site.webmanifest}" href="../static/fav/site.webmanifest">-->
+        <meta charset="UTF-8">
+        <meta name="viewport"
+              content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <title>Share File</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+              rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <script src="https://kit.fontawesome.com/204035da51.js"
+                crossorigin="anonymous"></script>
+        <link rel="stylesheet" th:href="@{/css/general.css}"
+              href="../static/css/general.css">
+
+    </head>
+</head>
+<body primary-color>
+    <div th:insert="fragment/header.html :: header"></div>
+    <nav aria-label="breadcrumb" class="secondary-color container-fluid">
+        <!--    <p class="primary-text-color">Location:</p>-->
+        <ol class="breadcrumb">
+            <li th:unless="${previousFolder.isBlank()}">
+                <a class="primary-text-color" href="#"
+                   th:href="@{/files(parent=${previousFolder})}"><i
+                        class="fas fa-backward fa-1x"></i> &nbsp;</a>
+                &nbsp; |
+            </li>
+
+            <li>
+                &nbsp;
+                <i class="fas fa-folder-open fa-1x primary-text-color"></i>
+                &nbsp;
+            </li>
+            <li class="breadcrumb-item active secondary-text-color"
+                aria-current="page"
+                th:text="${folder}" th:each="folder: ${explodedAddress}">Root
+            </li>
+            &nbsp;
+            &nbsp;
+            &nbsp;
+
+            <li id="pageLoadDate" class="secondary-text-color invisible"
+                aria-current="page"
+                th:text="${pageLoadDate}"> time
+            </li>
+        </ol>
+
+    </nav>
+
+
+    <div class="container-fluid m-5 justify-content-center .overflow-hidden">
+
+    </div>
+
+</body>
+</html>
