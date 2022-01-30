@@ -1,14 +1,16 @@
 package ir.kbox.manager.controller.webservice.rest;
 
+import ir.kbox.manager.config.security.SecurityUtil;
 import ir.kbox.manager.model.file.File;
+import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
 import java.time.Instant;
 
 @RestController
@@ -16,6 +18,7 @@ import java.time.Instant;
 @RequestMapping("/api/files")
 public class FileRestController {
     private final FileService fileService;
+    private final SecurityUtil securityUtil;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("/upload/folder")
@@ -23,6 +26,15 @@ public class FileRestController {
     public String createFolder(@RequestParam("name") String name, @RequestParam(
             value = "parent", defaultValue = File.ROOT) String parentFolder) {
         return fileService.createFolder(name, parentFolder);
+    }
+
+    @GetMapping("/download/{id}")
+    public ResponseEntity<StreamingResponseBody> downloadFile(@PathVariable String id,
+                                                              @RequestParam("sessionId") String sessionId,
+                                                              @RequestHeader(value = "Range",
+                                                                      required = false) String rangeHeader) {
+        User user = securityUtil.checkSessionAndGetUser(sessionId);
+        return fileService.getFileDownloadStream(id, rangeHeader,user);
     }
 
     @GetMapping("/upload/file")

@@ -5,15 +5,23 @@ import ir.kbox.manager.controller.exceptions.AlreadyExistsException;
 import ir.kbox.manager.controller.exceptions.NotFoundException;
 import ir.kbox.manager.controller.exceptions.OperationFailedException;
 import ir.kbox.manager.model.file.File;
+import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.FileRepository;
 import ir.kbox.manager.util.FileUtil;
 import ir.kbox.manager.util.datastructure.Tuple2;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
 
 import java.io.IOException;
+import java.io.RandomAccessFile;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 
@@ -22,6 +30,7 @@ import java.util.List;
 public class FileService {
     private final FileRepository fileRepository;
     private final SecurityUtil securityUtil;
+    private static final int FILE_BUFFER_SIZE = 1024;
 
     @Transactional
     public String createFolder(String name, String parentFolder) {
@@ -37,8 +46,10 @@ public class FileService {
             }
         }
         return fileRepository.save(new File().setIsDirectory(true)
-                        .setName(name).setParent(parentFolder)
-                        .setUserId(securityUtil.getCurrentUser().getId()))
+                .setLastModified(Instant.now())
+                .setCreationDate(Instant.now())
+                .setName(name).setParent(parentFolder)
+                .setUserId(securityUtil.getCurrentUser().getId()))
                 .getName();
     }
 
@@ -60,6 +71,9 @@ public class FileService {
         String lastFolder = folders[folders.length - 1];
         String parent = parentWithFolder.substring(0,
                 parentWithFolder.lastIndexOf(lastFolder));
+        if (!parent.equals(File.ROOT)) {
+            parent = parentWithFolder.substring(0, parent.length() - 1);
+        }
         return Tuple2.of(parent, lastFolder);
     }
 
@@ -149,5 +163,92 @@ public class FileService {
         checkAndCreateRoot();
         return fileRepository.findFilesByParentAndUserId(parent,
                 securityUtil.getCurrentUser().getId());
+    }
+
+    public ResponseEntity<StreamingResponseBody> getFileDownloadStream(String id
+            , String rangeHeader, User user) {
+        File file = fileRepository.findByIdAndUserId(id,
+                user.getId()).orElseThrow(NotFoundException::new);
+        return streamFile(file, rangeHeader);
+    }
+
+    private ResponseEntity<StreamingResponseBody> streamFile(
+            File inputFile, long rangeStart, long rangeEnd, long fileSize,
+            final HttpHeaders responseHeaders) {
+        byte[] buffer = new byte[FILE_BUFFER_SIZE];
+        String contentLength = String.valueOf((rangeEnd - rangeStart) + 1);
+        responseHeaders.add("Content-Length", contentLength);
+        responseHeaders.add("Accept-Ranges", "bytes");
+        responseHeaders.add("Content-Range", "bytes" + " "
+                + rangeStart + "-" + rangeEnd + "/" + fileSize);
+        StreamingResponseBody responseStream = os -> {
+            RandomAccessFile file = new RandomAccessFile(inputFile.getAddress(), "r");
+            try (file) {
+                long pos = rangeStart;
+                file.seek(pos);
+                while (pos < rangeEnd) {
+                    file.read(buffer);
+                    os.write(buffer);
+                    pos += buffer.length;
+                }
+                os.flush();
+            } catch (Exception e) {
+                throw new NotFoundException("While Streaming file with id"
+                        + inputFile.getId(), e);
+            }
+        };
+        return new ResponseEntity<>(responseStream, responseHeaders, HttpStatus.PARTIAL_CONTENT);
+    }
+
+    private ResponseEntity<StreamingResponseBody> streamVideo(File inputFile,
+                                                              long fileSize,
+                                                              final HttpHeaders responseHeaders) {
+        byte[] buffer = new byte[FILE_BUFFER_SIZE];
+        responseHeaders.add("Content-Length", Long.toString(fileSize));
+        StreamingResponseBody responseStream = os -> {
+            RandomAccessFile file = new RandomAccessFile(inputFile.getAddress(), "r");
+            try (file) {
+                long pos = 0;
+                file.seek(pos);
+                while (pos < fileSize - 1) {
+                    file.read(buffer);
+                    os.write(buffer);
+                    pos += buffer.length;
+                }
+                os.flush();
+            } catch (Exception e) {
+                throw new NotFoundException("While Streaming File with id"
+                        + inputFile.getId(), e);
+            }
+        };
+        return new ResponseEntity<>(responseStream, responseHeaders, HttpStatus.OK);
+    }
+
+    private ResponseEntity<StreamingResponseBody> streamFile(File file, String rangeHeader) {
+        long fileSize;
+        try {
+            fileSize = Files.size(Paths.get(file.getAddress()));
+        } catch (IOException e) {
+            throw new NotFoundException("While Streaming File with id - Sizing"
+                    + file.getId(), e);
+        }
+        final HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.add("Content-Type", file.getFileType());
+        responseHeaders.add("Content-Disposition", "attachment;filename=" + file.getName());
+        if (rangeHeader == null) {
+            return streamVideo(file, fileSize, responseHeaders);
+        }
+        String[] ranges = rangeHeader.split("-");
+        long rangeStart = Long.parseLong(ranges[0].substring(6));
+        long rangeEnd;
+        if (ranges.length > 1) {
+            rangeEnd = Long.parseLong(ranges[1]);
+        } else {
+            rangeEnd = fileSize - 1;
+        }
+        if (fileSize < rangeEnd) {
+            rangeEnd = fileSize - 1;
+        }
+        return streamFile(file, rangeStart, rangeEnd, fileSize, responseHeaders);
     }
 }

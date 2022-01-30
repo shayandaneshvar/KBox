@@ -10,6 +10,7 @@ import java.time.Instant;
 @Data
 @NoArgsConstructor
 public class FileDto {
+    private String id;
     private String parent;
     private String previousFolder;
     private String enterFolder;
@@ -23,9 +24,25 @@ public class FileDto {
         BeanUtils.copyProperties(file, this);
         if (parent == null) {
             parent = "";
+        } else if (!parent.equals(File.ROOT)) {
+            parent = parent + "/";
         }
-        enterFolder = parent + name + "/";
-        previousFolder = parent.substring(0, parent.substring(0,
+
+        enterFolder = parent + name;
+        if (parent.isEmpty()) {
+            previousFolder = "";
+            return;
+        }
+        previousFolder = ExtractPreviousFolderFromParent(parent);
+
+    }
+
+    public static String ExtractPreviousFolderFromParent(String parent) {
+        String result = parent.substring(0, parent.substring(0,
                 parent.length() - 1).lastIndexOf("/") + 1);
+        if (!result.isEmpty() && !result.equals(File.ROOT)) {
+            result = result.substring(0, result.length() - 1);
+        }
+        return result;
     }
 }

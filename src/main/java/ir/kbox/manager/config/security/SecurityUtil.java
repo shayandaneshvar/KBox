@@ -45,6 +45,9 @@ public class SecurityUtil {
 
     public User checkSessionAndGetUser(String sessionId) {
         UserPrincipal userPrincipal = getUserPrincipal(sessionId);
+        if(userPrincipal == null){
+            throw new UnAuthorizedException("Session Invalid Exception!");
+        }
         return userPrincipal.getUser();
     }
 

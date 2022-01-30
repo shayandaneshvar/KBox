@@ -28,7 +28,7 @@
                     <h1> Upload Your File</h1>
                 </div>
                 <div class="pb-5">
-                    <form id="upload-from" th:action="@{/files/upload}" method="post" th:object="${file}"
+                    <form id="upload-from" th:action="@{/files/upload(parent=${parent})}" method="post" th:object="${file}"
                           enctype="multipart/form-data">
                         <div class="secondary-text-color">
                             <input id="formFileLg" class="form-control form-control-lg"  type="file" value="upload file" name="uploadedImage" accept="*/*" >

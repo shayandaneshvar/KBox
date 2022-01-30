@@ -1,28 +1,35 @@
-<html>
     <html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+    <header>
 
-    <body>
         <div class="container-fluid primary-color primary-text-color " th:fragment="header">
             <div class="row">
                 <div class="col-1 up-buttons" onclick=location.href="/index">
-                    Kbox
+                    KBox
                 </div>
-                <div class="col-1 up-buttons" onclick=location.href="/auth/login" sec:authorize="not isAuthenticated()" >
-                    Login
-                </div>
+
                 <div class="col-1 up-buttons" onclick=location.href="/admin" sec:authorize="hasRole('ADMIN')" >
                     Admin Panel
                 </div>
-                <div class="col-1 up-buttons" onclick=location.href="/files/upload" sec:authorize="isAuthenticated()" >
-                    Upload
+                <div class="col-1 up-buttons" onclick=location.href="/files" sec:authorize="isAuthenticated()" >
+                    My Files
                 </div>
-                <div class="col-1 up-buttons" onclick=location.href="/auth/logout" sec:authorize="isAuthenticated()" >
+
+                <div class="col-1 up-buttons" onclick=location.href="/auth/logout"
+                     sec:authorize="isAuthenticated() and hasRole('ADMIN')" style="margin-left: 66%" >
                     Logout
+                </div>
+                <div class="col-1 up-buttons" onclick=location.href="/auth/logout"
+                     sec:authorize="isAuthenticated() and not hasRole('ADMIN')" style="margin-left: 75%" >
+                    Logout
+                </div>
+                <div class="col-1 up-buttons" onclick=location.href="/auth/login" sec:authorize="not isAuthenticated()"
+                     style="margin-left: 83%">
+                    Login
                 </div>
             </div>
 
         </div>
-    </body>
 
+    </header>
 </html>
 
