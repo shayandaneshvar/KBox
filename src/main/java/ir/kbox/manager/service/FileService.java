@@ -184,6 +184,22 @@ public class FileService {
         return streamFile(file, rangeHeader);
     }
 
+    public ResponseEntity<StreamingResponseBody> getFileDownloadStream(String fileId,
+                                                                       String rangeHeader,
+                                                                       User user,
+                                                                       String parent,
+                                                                       String folder,
+                                                                       String userId) {
+        if (folder.equals(File.ROOT)) {
+            File file = fileRepository
+                    .findNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, user.getId(), userId)
+                    .orElseThrow(NotFoundException::new);
+            return streamFile(file, rangeHeader);
+        }
+        return null; // TODO: 1/31/2022
+    }
+
+
     private ResponseEntity<StreamingResponseBody> streamFile(
             File inputFile, long rangeStart, long rangeEnd, long fileSize,
             final HttpHeaders responseHeaders) {
@@ -212,9 +228,10 @@ public class FileService {
         return new ResponseEntity<>(responseStream, responseHeaders, HttpStatus.PARTIAL_CONTENT);
     }
 
-    private ResponseEntity<StreamingResponseBody> streamVideo(File inputFile,
-                                                              long fileSize,
-                                                              final HttpHeaders responseHeaders) {
+
+    private ResponseEntity<StreamingResponseBody> streamFile(File inputFile,
+                                                             long fileSize,
+                                                             final HttpHeaders responseHeaders) {
         byte[] buffer = new byte[FILE_BUFFER_SIZE];
         responseHeaders.add("Content-Length", Long.toString(fileSize));
         StreamingResponseBody responseStream = os -> {
@@ -248,7 +265,7 @@ public class FileService {
         responseHeaders.add("Content-Type", file.getFileType());
         responseHeaders.add("Content-Disposition", "attachment;filename=" + file.getName());
         if (rangeHeader == null) {
-            return streamVideo(file, fileSize, responseHeaders);
+            return streamFile(file, fileSize, responseHeaders);
         }
         String[] ranges = rangeHeader.split("-");
         long rangeStart = Long.parseLong(ranges[0].substring(6));
@@ -312,4 +329,21 @@ public class FileService {
                 .findUserIdsBySharedUserWithId(securityUtil.getCurrentUser().getId());
         return userRepository.findUsersByIdIn(userIds);
     }
+
+    public List<File> findSharedFilesFromUser(String userId, String parent,
+                                              String folder) {
+        // list files and folder that are shared directly
+        if (folder.equals(File.ROOT)) {
+            return fileRepository.findFilesByUserIdAndSharedUserId(userId,
+                    securityUtil.getCurrentUser().getId());
+        }
+        // list only files in chosen folder
+        if (fileRepository.existsByParentAndNameAndUserIdAndSharedUserId(parent
+                , folder, userId, securityUtil.getCurrentUser().getId())) {
+            return fileRepository.findNonDirectoryFilesWithUserIdAndParentStartsWith(userId, parent + "/" + folder);
+        }
+        throw new UnacceptableRequestException();
+    }
+
+
 }

@@ -1,5 +1,7 @@
 package ir.kbox.manager.util;
 
+import org.thymeleaf.util.StringUtils;
+
 import javax.servlet.http.HttpServletRequest;
 
 public final class Util {
@@ -15,5 +17,12 @@ public final class Util {
 
     public static Runnable throwException(RuntimeException exception) {
         throw exception;
+    }
+
+    public static String nullStringDefault(String input, String defaultValue) {
+        if (StringUtils.isEmpty(input.trim()) || input.trim().equals("null")) {
+            return defaultValue;
+        }
+        return input;
     }
 }

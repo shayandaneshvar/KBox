@@ -17,7 +17,7 @@ public class Bootstrapper implements CommandLineRunner {
     private final UserRepository userRepository;
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         if (!userRepository.existsUserByUsername("admin")) {
             userService.saveUser(new User()
                             .setFirstname("Admin name")

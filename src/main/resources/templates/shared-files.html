@@ -29,16 +29,16 @@
 
 
 </head>
-<body class="primary-color" onload="JavaScript:timedRefresh(5000);">
+<body class="primary-color">
 
-    <div th:insert="fragment/header.html :: header"></div>
-    <nav aria-label="breadcrumb" class="secondary-color container-fluid">
+<div th:insert="fragment/header.html :: header"></div>
+<nav aria-label="breadcrumb" class="secondary-color container-fluid">
     <!--    <p class="primary-text-color">Location:</p>-->
     <ol class="breadcrumb">
-        <li th:unless="${previousFolder.isBlank()}">
+        <li>
             <a class="primary-text-color" href="#"
-               th:href="@{/files(parent=${previousFolder})}"><i
-                    class="fas fa-backward fa-1x"></i> &nbsp;</a>
+               th:href="@{/files/share/user}"><i
+                    class="fas fa-share fa-1x"></i> &nbsp;</a>
             &nbsp; |
         </li>
 
@@ -49,7 +49,7 @@
         </li>
         <li class="breadcrumb-item active secondary-text-color"
             aria-current="page"
-            th:text="${folder}" th:each="folder: ${explodedAddress}">
+            th:text="${user.username}">
             User
 
         </li>
@@ -64,22 +64,16 @@
             th:text="${folder}" th:each="folder: ${explodedAddress}">Root
         </li>
         &nbsp;
-        &nbsp;
-        &nbsp;
-
-        <li id="pageLoadDate" class="secondary-text-color invisible"
-            aria-current="page"
-            th:text="${pageLoadDate}"> time
-        </li>
     </ol>
 
 </nav>
 
-    <div class="container-fluid m-5 justify-content-center .overflow-hidden">
+<div class="container-fluid m-5 justify-content-center .overflow-hidden">
     <div class="grid-container justify-content-center">
         <div class=" grid-item" th:each="file: ${files}"
              th:if="${file.isDirectory}">
-            <a href="#" th:href="@{/files(parent=${file.enterFolder})}">
+            <a href="#"
+               th:href="@{/files/share/list(parent=${file.parent},folder=${file.name},userId=${user.id})}">
                 <div class="justify-content-center">
                     <i class="fas fa-folder fa-4x fa-center-fat"></i>
                 </div>
@@ -91,13 +85,13 @@
         <div class="grid-item" th:each="file: ${files}"
              th:unless="${file.isDirectory}">
             <a href="#"
-               th:href="@{/api/files/download/{id}(id=${file.id},sessionId=${sessionId})}">
+               th:href="@{/api/files/share/download/{id}(id=${file.id},sessionId=${sessionId},userId=${user.id},parent=${file.parent},folder=${file.name})}">
                 <div class="justify-content-center">
                     <i class="fas fa-file fa-4x fa-center-tall"></i>
                 </div>
                 <div class="row left-text ui-menu-item-wrapper"
                      th:text="${file.name}">
-                    Filesdasad
+                    Files
                 </div>
             </a>
         </div>
@@ -112,25 +106,4 @@
 </div>
 
 </body>
-<script>
-    function timedRefresh(timeoutPeriod) {
-        setInterval(refresher, timeoutPeriod);
-    }
-
-    async function refresher() {
-        // Todo: rewrite refresher
-        const loadDate = document.getElementById("pageLoadDate").innerHTML;
-        let parent = new URL(location.href).searchParams.get('parent');
-        console.log("loadDate: " + loadDate)
-        const changed = await fetch("/api/files/folder/update?folder=" + parent
-            + "&lastModified=" + loadDate).then(res => res.json());
-        console.log(changed);
-        if (changed) {
-            clearInterval(refresher)
-            location.reload();
-        }
-    }
-
-
-</script>
 </html>

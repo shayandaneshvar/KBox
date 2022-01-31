@@ -5,6 +5,7 @@ import ir.kbox.manager.controller.exceptions.UnacceptableRequestException;
 import ir.kbox.manager.model.user.Roles;
 import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.UserRepository;
+import ir.kbox.manager.util.Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,13 +27,10 @@ public class UserService {
         if (userRepository.existsUserByEmailOrUsername(user.getUsername(), user.getEmail())) {
             throw new UnacceptableRequestException("Duplicate Email or username!");
         }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roles);
         user.setCreationDate(Instant.now());
-
         return userRepository.save(user);
-
     }
 
     public List<User> findAll() {
@@ -47,5 +45,9 @@ public class UserService {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
+    }
+
+    public User findUserById(String userId) {
+        return userRepository.findById(userId).orElseThrow(NotFoundException::new);
     }
 }
