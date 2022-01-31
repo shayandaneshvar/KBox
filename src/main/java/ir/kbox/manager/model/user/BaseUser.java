@@ -29,4 +29,8 @@ public class BaseUser extends BaseEntity {
                 .setEmail(user.getEmail())
                 .setId(user.getId());
     }
+
+    public static BaseUser create() {
+        return new BaseUser();
+    }
 }

@@ -29,8 +29,8 @@ public interface FileRepository extends MongoRepository<File, String> {
 
     List<File> findFilesByParentAndUserId(String parent, String currentUser);
 
-    @Query(fields = "userId")
-    List<File> findFilesBySharedUsersContaining(BaseUser baseUser);
+//    @Query(fields = "userId")
+//    List<File> findFilesBySharedUsersContaining(BaseUser baseUser);
 
 
 }

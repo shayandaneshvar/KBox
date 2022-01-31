@@ -31,7 +31,7 @@ public class FileSharingController {
         return "share";
     }
 
-    @GetMapping
+    @GetMapping("/users")
     @PreAuthorize("isAuthenticated()")
     public String showSharedUsers(Model model) {
         List<User> users = fileService.findSharedUsersOfUser();
