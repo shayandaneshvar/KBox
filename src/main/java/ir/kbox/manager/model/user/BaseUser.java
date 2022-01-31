@@ -16,12 +16,9 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true, onlyExplicitlyIncluded = true)
 public class BaseUser extends BaseEntity {
-    @NotEmpty
-    @Size(min = 2)
-    @Indexed(unique = true)
+    @Indexed
     private String username;
-    @Email
-    @Indexed(unique = true)
+    @Indexed
     private String email;
 
     public BaseUser(User user) {

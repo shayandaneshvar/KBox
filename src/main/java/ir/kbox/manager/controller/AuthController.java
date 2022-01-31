@@ -23,7 +23,6 @@ public class AuthController {
         return "register";
     }
 
-    // TODO: 1/29/2022 fix validation
     @PostMapping("/register")
     public String register(@Valid User user, BindingResult bindingResult, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {

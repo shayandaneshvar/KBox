@@ -1,6 +1,7 @@
 package ir.kbox.manager.service;
 
 import ir.kbox.manager.controller.exceptions.NotFoundException;
+import ir.kbox.manager.controller.exceptions.UnacceptableRequestException;
 import ir.kbox.manager.model.user.Roles;
 import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.UserRepository;
@@ -22,10 +23,16 @@ public class UserService {
     }
 
     public User saveUser(User user, List<Roles> roles) {
+        if (userRepository.existsUserByEmailOrUsername(user.getUsername(), user.getEmail())) {
+            throw new UnacceptableRequestException("Duplicate Email or username!");
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roles);
         user.setCreationDate(Instant.now());
+
         return userRepository.save(user);
+
     }
 
     public List<User> findAll() {

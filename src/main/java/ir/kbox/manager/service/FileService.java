@@ -28,6 +28,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -307,7 +308,8 @@ public class FileService {
     }
 
     public List<User> findSharedUsersOfUser() {
-        throw new RuntimeException();
-        // TODO: 1/31/2022  
+        Set<String> userIds = fileRepository
+                .findUserIdsBySharedUserWithId(securityUtil.getCurrentUser().getId());
+        return userRepository.findUsersByIdIn(userIds);
     }
 }

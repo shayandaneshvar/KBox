@@ -1,13 +1,14 @@
 package ir.kbox.manager.repository;
 
 import ir.kbox.manager.model.file.File;
-import ir.kbox.manager.model.user.BaseUser;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Repository
 public interface FileRepository extends MongoRepository<File, String> {
@@ -16,10 +17,13 @@ public interface FileRepository extends MongoRepository<File, String> {
 
     Boolean existsFileByNameAndParentAndUserId(String name, String parent, String userId);
 
-    Boolean existsFileByNameAndParent(String name,String parent);
-    Boolean existsByNameAndParent(String name,String parent);
+    Boolean existsFileByNameAndParent(String name, String parent);
+
+    Boolean existsByNameAndParent(String name, String parent);
+
     List<File> findByNameAndParentAndUserId(String name, String parent, String userId);
-    List<File> findByNameAndParent(String name,String parent);
+
+    List<File> findByNameAndParent(String name, String parent);
 
     File findFileByNameAndParentAndUserId(String name, String parent, String userId);
 
@@ -29,8 +33,14 @@ public interface FileRepository extends MongoRepository<File, String> {
 
     List<File> findFilesByParentAndUserId(String parent, String currentUser);
 
-//    @Query(fields = "userId")
-//    List<File> findFilesBySharedUsersContaining(BaseUser baseUser);
+    @Query(value = "{sharedUsers: {$elemMatch: {_id: ?0 }}}", fields = "{userId : 1}")
+    List<File> findFilesBySharedUserWithId(String id);
 
+    default Set<String> findUserIdsBySharedUserWithId(String id) {
+        return findFilesBySharedUserWithId(id)
+                .stream()
+                .map(File::getUserId)
+                .collect(Collectors.toSet());
+    }
 
 }

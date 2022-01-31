@@ -15,6 +15,7 @@ spring:
     mongodb:
       host: ${MONGO_LOCATION:localhost}
       port: ${MONGO_PORT:27017}
+      auto-index-creation: true
       #      uri: mongodb://${MONGO_LOCATION:localhost}/dapixi
       #      username: dapixi
       #      password: ????
