@@ -16,6 +16,8 @@ services:
   kbox:
     image: kbox/manager:v1
     restart: unless-stopped
+    volumes:
+      - /home/files/:/home/files/
     networks:
       - kbox-network
     ports:
