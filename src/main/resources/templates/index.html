@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org/" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
     <link rel="apple-touch-icon" sizes="180x180" th:href="@{/fav/apple-touch-icon.png}" href="../static/fav/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" th:href="@{/fav/favicon-32x32.png}" href="../static/fav/favicon-32x32.png">
@@ -19,7 +20,7 @@
 <div class="container-fluid p-5 secondary-color secondary-text-color text-center">
     <h1>Welcome to KBox!</h1>
     <br/>
-    <img src="../static/fav/android-chrome-192x192.png" alt="K"/>
+    <img src="../static/fav/android-chrome-192x192.png" th:src="@{/fav/android-chrome-192x192.png}" alt="K"/>
     <br/>
     <br/>
     <p>A file hosting service</p>
