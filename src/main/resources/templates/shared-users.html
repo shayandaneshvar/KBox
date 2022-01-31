@@ -35,7 +35,12 @@
 <div th:insert="fragment/header.html :: header"></div>
 <div class="container-fluid m-5 justify-content-center .overflow-hidden">
     <div class="grid-container justify-content-center">
-
+        <!--     if empty:  -->
+        <div class="alert secondary-text-color bold" style="display: flex"
+             th:if="${#lists.isEmpty(users)}">
+            <i class="fas fa-exclamation-triangle fa-6x"> &nbsp; &nbsp;</i>
+                Empty! 😶😐😑😬
+        </div>
         <div class=" grid-item" th:each="user: ${users}">
             <a href="#" th:href="@{/files/share/list(userId=${user.id})}">
                 <div class="justify-content-center">

@@ -84,10 +84,11 @@
             <a href="#" style="overflow-wrap: anywhere; display: table-cell;"
                th:href="|https://kbox.shayandaneshvar.ir/api/files/share/download/${file.id}/link|">
 
-            <div class="alert secondary-text-color" th:if="${file.isVisible}"
-                 th:text="|https://kbox.shayandaneshvar.ir/api/files/share/download/${file.id}/link|">
-                link
-            </div>
+                <div class="alert secondary-text-color"
+                     th:if="${file.isVisible}"
+                     th:text="|https://kbox.shayandaneshvar.ir/api/files/share/download/${file.id}/link|">
+                    link
+                </div>
             </a>
             <div>
                 <button sec:authorize="isAuthenticated()" type="button"
@@ -100,7 +101,8 @@
                         <i class="fas fa-user-plus fa-1_6x"> </i>
                     </span>
                 </button>
-                <button sec:authorize="isAuthenticated()" type="button" th:unless="${file.isVisible} and not ${file.isDirectory}"
+                <button sec:authorize="isAuthenticated()" type="button"
+                        th:unless="${file.isVisible} and not ${file.isDirectory}"
                         class="btn normal-btn "
                         onclick="toggleVisibility(0)"
                         th:attr="onclick=|toggleVisibility('${file.id}')|">
@@ -110,7 +112,8 @@
                         </span>
                 </button>
 
-                <button sec:authorize="isAuthenticated()" type="button" th:if="${file.isVisible} and not ${file.isDirectory}"
+                <button sec:authorize="isAuthenticated()" type="button"
+                        th:if="${file.isVisible} and not ${file.isDirectory}"
                         class="btn normal-btn "
                         onclick="toggleVisibility(0)"
                         th:attr="onclick=|toggleVisibility('${file.id}')|">
@@ -173,7 +176,7 @@
             )
     }
 
-    function toggleVisibility(fileId){
+    function toggleVisibility(fileId) {
         fetch("/api/files/share/user/link?fileId=" + fileId, {method: 'PUT'})
             .then(res => {
                     if (res.status === 202) {
