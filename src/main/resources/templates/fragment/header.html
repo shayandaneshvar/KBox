@@ -5,17 +5,17 @@
             <div class="row justify-content-between">
                 <div class="col">
                     <div class="row">
-                        <div class="col up-buttons" onclick=location.href="/index">
+                        <div class="col-2 up-buttons" onclick=location.href="/index">
                             KBox
                         </div>
 
-                        <div class="col up-buttons" onclick=location.href="/admin" sec:authorize="hasRole('ADMIN')" >
+                        <div class="col-2 up-buttons" onclick=location.href="/admin" sec:authorize="hasRole('ADMIN')" >
                             Admin Panel
                         </div>
-                        <div class="col up-buttons" onclick=location.href="/files" sec:authorize="isAuthenticated()" >
+                        <div class="col-2 up-buttons" onclick=location.href="/files" sec:authorize="isAuthenticated()" >
                             My Files
                         </div>
-                        <div class="col up-buttons" onclick=location.href="/files/share/users" sec:authorize="isAuthenticated()" >
+                        <div class="col-2 up-buttons" onclick=location.href="/files/share/users" sec:authorize="isAuthenticated()" >
                             Shared Files
                         </div>
 
