@@ -209,9 +209,9 @@ public class FileService {
                                                                        String folder,
                                                                        String userId) {
         // base case
-        if (fileRepository.existNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, user.getId(), userId)) {
+        if (fileRepository.existNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, userId, user.getId())) {
             File file = fileRepository
-                    .findNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, user.getId(), userId)
+                    .findNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, userId, user.getId())
                     .orElseThrow(NotFoundException::new);
             return streamFile(file, rangeHeader);
         }

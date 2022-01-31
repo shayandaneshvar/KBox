@@ -72,8 +72,7 @@ public interface FileRepository extends MongoRepository<File, String> {
                                                                     String userId,
                                                                     String sharedUserId);
 
-    @Query(value = "{$and: [{isDirectory: false}, { _id: ?0 }, { userId: ?1 }," +
-            " { sharedUsers: { $elemMatch: {_id: ?2 } } }] }", exists = true)
+    @Query(value = "{$and: [{isDirectory: false}, { _id: ?0 }, { userId: ?1 },{ sharedUsers: { $elemMatch: {_id: ?2 } } }] }", exists = true)
     Boolean existNonDirectoryFileByIdAndUserIdAndSharedUserId(String fileId, String id, String userId);
 
     default List<File> findNonDirectoryFilesWithUserIdAndParentStartsWith(String userId, String parent) {
