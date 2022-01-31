@@ -2,31 +2,35 @@
     <header>
 
         <div class="container-fluid primary-color primary-text-color " th:fragment="header">
-            <div class="row">
-                <div class="col-1 up-buttons" onclick=location.href="/index">
-                    KBox
-                </div>
+            <div class="row justify-content-between">
+                <div class="col">
+                    <div class="row">
+                        <div class="col up-buttons" onclick=location.href="/index">
+                            KBox
+                        </div>
 
-                <div class="col-1 up-buttons" onclick=location.href="/admin" sec:authorize="hasRole('ADMIN')" >
-                    Admin Panel
+                        <div class="col up-buttons" onclick=location.href="/admin" sec:authorize="hasRole('ADMIN')" >
+                            Admin Panel
+                        </div>
+                        <div class="col up-buttons" onclick=location.href="/files" sec:authorize="isAuthenticated()" >
+                            My Files
+                        </div>
+                        <div class="col up-buttons" onclick=location.href="/files/share/users" sec:authorize="isAuthenticated()" >
+                            Shared Files
+                        </div>
+
+                    </div>
                 </div>
-                <div class="col-1 up-buttons" onclick=location.href="/files" sec:authorize="isAuthenticated()" >
-                    My Files
-                </div>
-                <div class="col-1 up-buttons" onclick=location.href="/files/share/users" sec:authorize="isAuthenticated()" >
-                    Shared Files
-                </div>
-                <div class="col-1 up-buttons" onclick=location.href="/auth/logout"
-                     sec:authorize="isAuthenticated() and hasRole('ADMIN')" style="margin-left: 66%" >
-                    Logout
-                </div>
-                <div class="col-1 up-buttons" onclick=location.href="/auth/logout"
-                     sec:authorize="isAuthenticated() and not hasRole('ADMIN')" style="margin-left: 75%" >
-                    Logout
-                </div>
-                <div class="col-1 up-buttons" onclick=location.href="/auth/login" sec:authorize="not isAuthenticated()"
-                     style="margin-left: 83%">
-                    Login
+                <div class="col ">
+                    <div class="row justify-content-end">
+                        <div class="col-1 up-buttons" onclick=location.href="/auth/logout"
+                             sec:authorize="isAuthenticated()" >
+                            Logout
+                        </div>
+                        <div class="col-1 up-buttons" onclick=location.href="/auth/login" sec:authorize="not isAuthenticated()">
+                            Login
+                        </div>
+                    </div>
                 </div>
             </div>
 
