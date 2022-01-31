@@ -28,6 +28,9 @@ public interface FileRepository extends MongoRepository<File, String> {
     @Query(value = "{sharedUsers: {$elemMatch: {_id: ?0 }}}", fields = "{userId : 1}")
     List<File> findFilesBySharedUserWithId(String id);
 
+    @Query(value = "{sharedUsers: {$elemMatch: {_id: ?0 }}}", count = true)
+    long countFilesBySharedUserWithId(String id);
+
 
     @Query(value = "{$and: [{isDirectory: false},{_id: ?0},{userId: ?1 }, {parent: {$regex : ?2 }} ]}")
     Optional<File> findNonDirectoryFileByIdAndUserIdAndParentRegex(String fileId, String userId, String baseParent);
@@ -35,6 +38,7 @@ public interface FileRepository extends MongoRepository<File, String> {
     default Optional<File> findNonDirectoryFileByIdAndUserIdAndParentStartWith(String fileId, String userId, String baseParent) {
         return findNonDirectoryFileByIdAndUserIdAndParentRegex(fileId, userId, "^" + baseParent);
     }
+
     @Query(value = "{$and: [ {userId: ?0 }, {sharedUsers: {$elemMatch: {_id: ?1 } } } ] }")
     List<File> findFilesByUserIdAndSharedUserId(String userId, String sharedUserId);
 
@@ -75,4 +79,7 @@ public interface FileRepository extends MongoRepository<File, String> {
     default List<File> findNonDirectoryFilesWithUserIdAndParentStartsWith(String userId, String parent) {
         return findNonDirectoryFilesWithUserIdAndParentRegex(userId, "^" + parent);
     }
+
+    @Query("{ $and: [ { parent: ?1 }, { name: ?0}, { sharedUsers: { $elemMatch: { _id: ?2 } }}] }")
+    File findFileByNameAndParentAndSharedUserId(String name, String parent, String sharedUserId);
 }

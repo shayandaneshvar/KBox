@@ -18,6 +18,6 @@ public class FullFileDto extends FileDto {
 
     public FullFileDto(File file) {
         BeanUtils.copyProperties(file, this);
-        loadFolderProperties();
+        loadFolderProperties(file);
     }
 }

@@ -29,7 +29,7 @@
 
 
 </head>
-<body class="primary-color">
+<body class="primary-color" onload="timedRefresh(5000);">
 
 <div th:insert="fragment/header.html :: header"></div>
 <nav aria-label="breadcrumb" class="secondary-color container-fluid">
@@ -64,6 +64,13 @@
             th:text="${folder}" th:each="folder: ${explodedAddress}">Root
         </li>
         &nbsp;
+
+        &nbsp;
+
+        <li id="count" class="secondary-text-color invisible"
+            aria-current="page"
+            th:text="${count}"> times
+        </li>
     </ol>
 
 </nav>
@@ -106,4 +113,21 @@
 </div>
 
 </body>
+<script>
+    function timedRefresh(timeoutPeriod) {
+        setInterval(refresher, timeoutPeriod);
+    }
+    async function refresher() {
+        const loadDate = document.getElementById("count").innerHTML;
+        let parent = new URL(location.href).searchParams.get('parent');
+        console.log("loadDate: " + loadDate)
+        const changed = await fetch("/api/files/share/folder/update?folder=" + parent
+            + "&lastModified=" + loadDate).then(res => res.json());
+        console.log(changed);
+        if (changed) {
+            clearInterval(refresher)
+            location.reload();
+        }
+    }
+</script>
 </html>

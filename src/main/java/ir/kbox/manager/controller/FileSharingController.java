@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.Instant;
 import java.util.List;
 
 @Controller
@@ -66,6 +67,7 @@ public class FileSharingController {
         User user = userService.findUserById(userId);
         model.addAttribute("user", new BaseUser(user));
         model.addAttribute("sessionId", req.getSession().getId());
+        model.addAttribute("count", files.size());
         return "shared-files";
     }
 }

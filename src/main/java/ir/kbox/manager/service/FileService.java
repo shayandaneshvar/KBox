@@ -7,6 +7,7 @@ import ir.kbox.manager.controller.exceptions.NotFoundException;
 import ir.kbox.manager.controller.exceptions.OperationFailedException;
 import ir.kbox.manager.controller.exceptions.UnacceptableRequestException;
 import ir.kbox.manager.model.file.File;
+import ir.kbox.manager.model.file.Visibility;
 import ir.kbox.manager.model.user.BaseUser;
 import ir.kbox.manager.model.user.User;
 import ir.kbox.manager.repository.FileRepository;
@@ -146,6 +147,14 @@ public class FileService {
                 parentAndFolder.getFirst(), securityUtil.getCurrentUser().getId()).getLastModified().isAfter(lastModified);
     }
 
+    public Boolean hasSharedFolderUpdated(String folder, Long lastModified) {
+        if (checkFolderDoesntExist(folder)) {
+            throw new NotFoundException("Such folder does not exist!");
+        }
+        return fileRepository.countFilesBySharedUserWithId(securityUtil.getCurrentUser().getId()) != lastModified;
+    }
+
+
     public void deleteFileById(String id) {
         fileRepository
                 .findByIdAndUserId(id, securityUtil.getCurrentUser().getId())
@@ -181,6 +190,15 @@ public class FileService {
             , String rangeHeader, User user) {
         File file = fileRepository.findByIdAndUserId(id,
                 user.getId()).orElseThrow(NotFoundException::new);
+        return streamFile(file, rangeHeader);
+    }
+
+    public ResponseEntity<StreamingResponseBody> getFileDownloadStreamWithLink(String fileId,
+                                                                               String rangeHeader) {
+        File file = fileRepository.findById(fileId).orElseThrow(NotFoundException::new);
+        if (!file.getVisibility().equals(Visibility.ANYONE_WITH_LINK)) {
+            throw new NotFoundException();
+        }
         return streamFile(file, rangeHeader);
     }
 
@@ -359,4 +377,11 @@ public class FileService {
     }
 
 
+    public void toggleVisibility(String fileId) {
+        File file = fileRepository.findByIdAndUserId(fileId, securityUtil.getCurrentUser().getId())
+                .orElseThrow(NotFoundException::new);
+        file.setVisibility(file.getVisibility() == Visibility.STRICT ?
+                Visibility.ANYONE_WITH_LINK : Visibility.STRICT);
+        fileRepository.save(file);
+    }
 }

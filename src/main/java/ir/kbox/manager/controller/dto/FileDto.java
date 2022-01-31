@@ -1,6 +1,7 @@
 package ir.kbox.manager.controller.dto;
 
 import ir.kbox.manager.model.file.File;
+import ir.kbox.manager.model.file.Visibility;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
@@ -19,13 +20,14 @@ public class FileDto {
     private Boolean isDirectory;
     private Instant creationDate;
     private Instant lastModified;
+    private Boolean isVisible;
 
     public FileDto(File file) {
         BeanUtils.copyProperties(file, this);
-        loadFolderProperties();
+        loadFolderProperties(file);
     }
 
-    protected void loadFolderProperties() {
+    protected void loadFolderProperties(File file) {
         if (parent == null) {
             parent = "";
         } else if (!parent.equals(File.ROOT)) {
@@ -38,6 +40,7 @@ public class FileDto {
             return;
         }
         previousFolder = ExtractPreviousFolderFromParent(parent);
+        isVisible = file.getVisibility().equals(Visibility.ANYONE_WITH_LINK);
     }
 
     public static String ExtractPreviousFolderFromParent(String parent) {
