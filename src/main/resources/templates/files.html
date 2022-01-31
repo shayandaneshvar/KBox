@@ -225,6 +225,9 @@
 
     function createFolder(parent) {
         const name = prompt("Enter Folder name:");
+        if (name == null) {
+            return;
+        }
         if (!name || name.trim() === "") {
             alert("Folder name cannot be empty!");
             createFolder(parent);
