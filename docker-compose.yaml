@@ -11,3 +11,19 @@ services:
     ports:
       - 27017:27017
     restart: unless-stopped
+    networks:
+      - kbox-network
+  kbox:
+    image: ${kbox/manager}:${v1}
+    restart: unless-stopped
+    networks:
+      - kbox-network
+    ports:
+      - 80:80
+      - 8080:8080
+      - 443:443
+    environment:
+      MONGO_LOCATION: "mongodb"
+      MONGO_PORT: "27017"
+networks:
+  kbox-network:

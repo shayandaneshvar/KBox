@@ -3,4 +3,6 @@ server:
   error:
     include-message: always
 
-
+spring:
+  application:
+    name: manager
