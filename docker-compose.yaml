@@ -14,7 +14,7 @@ services:
     networks:
       - kbox-network
   kbox:
-    image: ${kbox/manager}:${v1}
+    image: kbox/manager:v1
     restart: unless-stopped
     networks:
       - kbox-network
