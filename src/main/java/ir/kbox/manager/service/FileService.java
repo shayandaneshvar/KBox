@@ -190,13 +190,25 @@ public class FileService {
                                                                        String parent,
                                                                        String folder,
                                                                        String userId) {
-        if (folder.equals(File.ROOT)) {
+        // base case
+        if (fileRepository.existNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, user.getId(), userId)) {
             File file = fileRepository
                     .findNonDirectoryFileByIdAndUserIdAndSharedUserId(fileId, user.getId(), userId)
                     .orElseThrow(NotFoundException::new);
             return streamFile(file, rangeHeader);
         }
-        return null; // TODO: 1/31/2022
+        // in folder case
+        Tuple2<String, String> parentAndFolder = extractParentAndFolder(parent);
+        if (fileRepository
+                .existsByParentAndNameAndUserIdAndSharedUserId(
+                        parentAndFolder.getFirst(), parentAndFolder.getSecond(), userId,
+                        user.getId())) {
+            File file = fileRepository.findNonDirectoryFileByIdAndUserIdAndParentStartWith(
+                    fileId, userId, parent)
+                    .orElseThrow(NotFoundException::new);
+            return streamFile(file, rangeHeader);
+        }
+        throw new UnacceptableRequestException();
     }
 
 
@@ -340,7 +352,8 @@ public class FileService {
         // list only files in chosen folder
         if (fileRepository.existsByParentAndNameAndUserIdAndSharedUserId(parent
                 , folder, userId, securityUtil.getCurrentUser().getId())) {
-            return fileRepository.findNonDirectoryFilesWithUserIdAndParentStartsWith(userId, parent + "/" + folder);
+            return fileRepository.findNonDirectoryFilesWithUserIdAndParentStartsWith(userId, (parent + "/" + folder)
+                    .replace("//", "/"));
         }
         throw new UnacceptableRequestException();
     }

@@ -1,6 +1,5 @@
 package ir.kbox.manager.controller;
 
-import ir.kbox.manager.config.security.SecurityUtil;
 import ir.kbox.manager.controller.dto.FullFileDto;
 import ir.kbox.manager.model.file.File;
 import ir.kbox.manager.model.user.BaseUser;
@@ -62,7 +61,8 @@ public class FileSharingController {
         List<File> files = fileService.findSharedFilesFromUser(userId, parent, folder);
         model.addAttribute("files", files);
         model.addAttribute("explodedAddress",
-                List.of(("Root" + parent + "/" + folder).split("/")));
+                List.of(("Root" + parent + "/" + folder)
+                        .replace("//", "/").split("/")));
         User user = userService.findUserById(userId);
         model.addAttribute("user", new BaseUser(user));
         model.addAttribute("sessionId", req.getSession().getId());
