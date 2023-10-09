@@ -1,18 +1,18 @@
 version: "3.3"
 services:
-  mongodb:
-    image : mongo:4.4.6
-    container_name: mongodb
-    environment:
-      - PUID=1000
-      - PGID=1000
-    volumes:
-      - /home/barry/mongodb/database:/data/db
-    ports:
-      - 27017:27017
-    restart: unless-stopped
-    networks:
-      - kbox-network
+#  mongodb:
+#    image : mongo:4.4.6
+#    container_name: mongodb
+#    environment:
+#      - PUID=1000
+#      - PGID=1000
+#    volumes:
+#      - /home/barry/mongodb/database:/data/db
+#    ports:
+#      - 27017:27017
+#    restart: unless-stopped
+#    networks:
+#      - kbox-network
   kbox:
     image: kbox/manager:v1
     restart: unless-stopped
