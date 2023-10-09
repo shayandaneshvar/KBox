@@ -11,5 +11,5 @@ services:
     ports:
       - 27017:27017
     restart: unless-stopped
-    networks:
-      - kbox-network
+#    networks:
+ #     - kbox-network
