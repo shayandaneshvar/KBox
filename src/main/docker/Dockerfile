@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk11:alpine-jre-nightly
+FROM openjdk:17-alpine
 RUN  apk update && apk upgrade && apk add netcat-openbsd
 RUN mkdir -p /usr/local/kbox
 RUN echo $JAVA_HOME
